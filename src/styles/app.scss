@@ -5,11 +5,19 @@
 @import './toast.scss';
 
 :root {
+  // LIGHT MODE COLORS
+  --lightmode-foreground-hue: 213, 223, 235;
+  --lightmode-background-hue: 15 23 42; // 255, 255, 255;
+
+  // DARK MODE COLORS
+  --darkmode-foreground-hue: 225, 225, 225;
+  --darkmode-background-hue: 10, 10, 10;
+
   --max-page-width: 900px;
   --transition-duration: 0.1s;
   --border-radius: 1rem;
   --border-thickness: 2px;
-  --accent-color: rgb(255, 0, 200);
+  --accent-color: rgb(69, 198, 64);
   --page-inset: 2rem;
 
   --link-color: var(--blue);
@@ -17,20 +25,13 @@
   --brand-size: 2.2em;
   --version-offset: 0rem;
   --header-color: var(--background-color);
-  --header-color: rgba(240,240,240,0.8);
+  // --header-color: rgba(240,240,240,0.8);
 
   --footer-color: var(--background-color);
   --page-gutter: 2rem;
   --navlink-border: 2px;
   --default-gap: 1.5rem;
 
-  // LIGHT MODE COLORS
-  --lightmode-foreground-hue: 50, 50, 50;
-  --lightmode-background-hue: 255, 255, 255;
-
-  // DARK MODE COLORS
-  --darkmode-foreground-hue: 225, 225, 225;
-  --darkmode-background-hue: 10, 10, 10;
 
   // MISC SETTINGS
   --ol-counter-size: 1.4em;
@@ -60,11 +61,11 @@
   --background-95: rgba(var(--background-hue), 0.95);
 
 
-  @media (prefers-color-scheme: dark) {
-    --foreground-hue: var(--darkmode-foreground-hue);
-    --background-hue: var(--darkmode-background-hue);
-    --header-color: rgba(30,30,30,0.9);
-  }
+  // @media (prefers-color-scheme: dark) {
+  //   --foreground-hue: var(--darkmode-foreground-hue);
+  //   --background-hue: var(--darkmode-background-hue);
+  //   --header-color: rgba(30,30,30,0.9);
+  // }
 
 
   @media screen and (max-width: 600px) {
