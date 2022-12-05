@@ -54,9 +54,28 @@
     align-items: center;
     column-gap: 1em;
     row-gap: 1em;
+    position: relative;
 
     &.constrained {
       max-width: var(--max-page-width);
+    }
+
+    &:before {
+      content: "";
+      position: absolute;
+      // right: 0;
+      left: -50px;
+      // left: auto;
+      // right: 0;
+
+      top: -100px;
+      height: 16rem;
+      width: 16rem;
+      background: #4a61dd;
+      // background: rgb(7, 226, 7);
+      opacity: .2;
+      filter: blur(150px);
+      z-index: -1;
     }
   }
 

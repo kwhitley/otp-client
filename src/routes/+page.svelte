@@ -4,8 +4,8 @@
 
 <!-- HEAD -->
 <svelte:head>
-  <title>{pageTitle('single-step file sharing')}</title>
-  <meta name="description" content="Create itty links by dragging files, pasting from the clipboard, or writing content from scratch.  Try it today!" />
+  <title>{pageTitle('dead-simple auth')}</title>
+  <meta name="description" content="Testing zone for OTP garden." />
 </svelte:head>
 
 <!-- MARKUP -->

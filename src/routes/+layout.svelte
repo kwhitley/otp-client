@@ -18,7 +18,7 @@
 
 <svelte:head>
   <link rel="icon" type="image/svg" href="/favicon.png">
-  <link rel="preconnect" href="https://api.itty.cards" crossorigin>
+  <link rel="preconnect" href="https://otp.garden" crossorigin>
   <title>{pageTitle()}</title>
   <meta name="description" content="Super-secret, secret project that shall remain secret until it's no longer a secret." />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
@@ -27,7 +27,7 @@
 
 <main>
   <Nav version horizontal constrained>
-    <a href="/about" use:navlink>About</a>
+    <!-- <a href="/about" use:navlink>About</a> -->
     <!-- <a href="/create" use:navlink>Create</a>
     <a href="/advanced" use:navlink>Editor</a> -->
     <!-- <a href="/about" use:navlink>What is This?</a> -->
