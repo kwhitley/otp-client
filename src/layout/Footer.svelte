@@ -14,7 +14,7 @@
 <footer class:sticky>
   <section class="split" class:constrained class:centered>
     <div class="social">
-      <a href="https://twitter.com/kevinrwhitley">
+      <a href="https://twitter.com/ittyindustries">
         <Twitter />
       </a>
 
