@@ -5,7 +5,7 @@
 <main>
   <h1>
     <strong>{$page.status}</strong>
-    <span>{$page.error.message}</span>
+    <span>{$page.error?.message}</span>
   </h1>
 </main>
 

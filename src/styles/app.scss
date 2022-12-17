@@ -15,7 +15,7 @@
 
   --max-page-width: 900px;
   --transition-duration: 0.1s;
-  --border-radius: 1rem;
+  --border-radius: 0.6rem;
   --border-thickness: 2px;
   --accent-color: var(--blue);
   --page-inset: 2rem;
@@ -211,8 +211,9 @@ h2 {
 
 h3 {
   font-size: 1.6em;
-  margin-bottom: 2rem;
+  margin-bottom: 0.6rem;
   font-weight: 400;
+  letter-spacing: 0;
 }
 
 p, li, caption {
@@ -407,4 +408,12 @@ dl {
 dt {
   text-transform: uppercase;
   font-size: 0.75em;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+* + pre {
+  margin-top: 2em;
 }

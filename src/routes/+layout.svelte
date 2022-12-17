@@ -66,7 +66,8 @@
       max-width: var(--max-width);
       width: 100%;
       justify-content: center;
-      padding: 3rem var(--page-inset);
+      padding: 1rem var(--page-inset);
+      overflow-x: hidden;
     }
 
     .page {

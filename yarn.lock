@@ -1487,10 +1487,10 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-itty-fetcher@^0.7.5:
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/itty-fetcher/-/itty-fetcher-0.7.5.tgz#8db67c3f09e1619ee8b56d07095fbf20e427a78a"
-  integrity sha512-sOPDYMSon+RbOuBmTz8NI48W/e7TiAIY8rkyTw2PkBvIjos7cdOxRGhsyMysOxOHLePRoCl/UIgqMlXzL+gHQg==
+itty-fetcher@^0.7.6:
+  version "0.7.6"
+  resolved "https://registry.yarnpkg.com/itty-fetcher/-/itty-fetcher-0.7.6.tgz#559a2a310b8204e03ca97b49aea202c3658c4634"
+  integrity sha512-Og0aOK6Wgsm8YUVKDfdo7NL6jvz5x6TzOgO05BAdBWcAcBDqoSRyxzGem2g9zWiIcRIblw/9Ku/8TGWb2Es/Iw==
 
 itty-time@^0.2.1:
   version "0.2.1"
@@ -1527,6 +1527,21 @@ jsonfile@^6.0.1:
     universalify "^2.0.0"
   optionalDependencies:
     graceful-fs "^4.1.6"
+
+just-clone@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/just-clone/-/just-clone-6.1.1.tgz#05a67155558c6517362db424303bb76f4f7f23df"
+  integrity sha512-V24KLIid8uaG7ayOymGfheNHtxgrbpzj1UznQnF9vQZMHlKGTSLT3WWmFx62OXSQPwk1Tn+uo+H5/Xhb4bL9pA==
+
+just-compare@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/just-compare/-/just-compare-2.2.2.tgz#915d2e52ef36d043a8951c3a9ae11b57534550c1"
+  integrity sha512-CdgzjlMSpfjWv4opv34bKeWmzv89hbKcjoSuJ9Y0ke/DTwFkoGfaLmmdwX5niTfKMldlzX3hJjYgWbX6qE5aRA==
+
+just-diff@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/just-diff/-/just-diff-5.1.1.tgz#8da6414342a5ed6d02ccd64f5586cbbed3146202"
+  integrity sha512-u8HXJ3HlNrTzY7zrYYKjNEfBlyjqhdBkoyTVdjtn7p02RJD5NvR8rIClzeGA7t+UYP1/7eAkWNLU0+P3QrEqKQ==
 
 kleur@^3.0.0:
   version "3.0.3"

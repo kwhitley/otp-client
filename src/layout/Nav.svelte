@@ -3,6 +3,9 @@
   import Brand from './Brand.svelte'
   import Menu from './Menu.svelte'
   import MenuIcon from './MenuIcon.svelte'
+  import LoginLink from './LoginLink.svelte'
+  import AuthenticatedNavItems from './AuthenticatedNavItems.svelte'
+  import { session } from '~/services/auth'
 
   export let sticky = false
   export let constrained = false
@@ -28,7 +31,10 @@
       {/if}
 
       <Menu horizontal={horizontal} open={showMenu}>
-        <slot />
+        {#if $session.isLoggedIn}
+          <AuthenticatedNavItems />
+        {/if}
+        <LoginLink />
       </Menu>
     </div>
   </section>

@@ -65,7 +65,7 @@
     --search-button-inset: 0.4em;
     --search-button-padding: 0.9em;
     --input-padding: 0.65em;
-    --search-input-font-size: 2em;
+    --search-input-font-size: 1.5em;
     --search-input-button-font-size: 0.8em;
   }
 
