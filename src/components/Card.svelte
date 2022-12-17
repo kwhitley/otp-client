@@ -20,7 +20,7 @@
 <!-- STYLES -->
 <style lang="scss">
   :root {
-    --card-font-size: 0.85rem;
+    --card-font-size: 1rem;
     --active-color: var(--card-active-color);
   }
 
