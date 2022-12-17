@@ -22,7 +22,7 @@
 <header class:sticky>
   <section class:constrained>
     {#if brand}
-      <Brand showVersion={version} />
+      <Brand />
     {/if}
 
     <div class="menu" class:open={true}>
