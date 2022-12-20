@@ -11,7 +11,7 @@
 
 <!-- MARKUP -->
 {#if $session.isLoggedIn}
-  <a href="/logout" on:click={logoutAndRedirect} class="logout">
+  <a on:click={logoutAndRedirect} class="logout">
     Log Out
   </a>
 {:else}

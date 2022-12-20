@@ -1,4 +1,5 @@
 import { fetcher } from '~/services/auth'
+import { apps, app } from '~/stores'
 
 const dev = import.meta.env.DEV
 
@@ -15,5 +16,22 @@ export const itty = {
 }
 
 export const otp = {
-
+  getApps: () => fetcher(OTP_FETCHER)
+                  .get('/my/apps')
+                  .then(v => apps.set(v) || v)
+                  .catch(err => {
+                    console.log('error loading app')
+                  }),
+  getApp: (id: string) => fetcher(OTP_FETCHER)
+                            .get(`/my/apps/${id}`)
+                            .then(v => app.set(v) || v)
+                            .catch(err => {
+                              console.log('error loading app')
+                            }),
+  createApp: () => fetcher(OTP_FETCHER).post('/my/apps').then(otp.getApps),
+  updateApp: (id: string, changes: any[]) =>
+                fetcher(OTP_FETCHER)
+                  .patch(`/my/apps/${id}`, changes)
+                  .then(v => app.set(v) || otp.getApps()),
+  deleteApp: (id: string) => fetcher(OTP_FETCHER).delete(`/my/apps/${id}`).then(otp.getApps),
 }

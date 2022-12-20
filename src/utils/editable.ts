@@ -1,6 +1,6 @@
 import clone from 'just-clone'
 import { diff } from 'just-diff'
-import { get, writable } from 'svelte/store'
+import { get, writable, derived } from 'svelte/store'
 
 type EditableOptions = {
   trim: boolean

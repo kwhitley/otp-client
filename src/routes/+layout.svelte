@@ -33,11 +33,11 @@
   </Nav>
 
   <section class="page-container" class:constrained>
-    {#key data.pathname}
+    {#key data.rootPath}
       <div
         class="page"
-        in:fly={{ x: 100, duration: 200, delay: 110 }}
-        out:fly={{ x: -100, duration: 100 }}
+        in:fly|local={{ x: 100, duration: 200, delay: 110 }}
+        out:fly|local={{ x: -100, duration: 100 }}
         >
         <slot />
       </div>

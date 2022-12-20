@@ -124,8 +124,7 @@ form {
     margin-top: 1rem;
     flex: 1 100%;
     display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
+    flex-flow: row-reverse wrap;
     gap: 0.5rem;
 
     @media screen and (max-width: 30em) {

@@ -1,5 +1,5 @@
 import { persistable } from '~/utils/persistable'
-import { writable } from 'svelte/store'
+import { writable, get } from 'svelte/store'
 import { fetcher as ittyFetcher } from 'itty-fetcher'
 
 const otp = ittyFetcher({ base: 'http://localhost:8787' })
@@ -26,12 +26,12 @@ export const state = writable({
 
 export const session = persistable('session', {
   previouslyLoggedIn: false,
-  isLoggedIn: false,
   jwt: undefined,
-  refresh: undefined,
+  isLoggedIn: false,
   sessionStart: undefined,
   sessionID: undefined,
-  expires: undefined,
+  sessionExpires: undefined,
+  tokenExpires: undefined,
 })
 
 const setSession = (patch: object) => session.update(existing => ({
@@ -44,20 +44,55 @@ const setState = (patch: object) => state.update(existing => ({
   ...patch,
 }))
 
-session.subscribe(values => {
-  if (values.jwt) {
-    // console.log('updating session with new jwt', values.jwt)
-  }
-  if (values?.sessionID) {
-    // console.log('updating global sessionID')
-    sessionID = values.sessionID
-  }
+export const logout = () => {
+  session.set({})
+  state.set({})
 
-  if (values?.jwt) {
-    // console.log('updating global jwt')
-    token = values.jwt
+  if (sessionID) {
+    if (!appID) {
+      throw new Error('use auth.setAppID(id) to connect your application.')
+    }
+
+    otp
+      .get(`/end-session/${sessionID}`)
+      .catch(() => setState({ error: 'There was an error during logout.' }))
   }
-})
+}
+
+const getSession = (sessionID: string) => {
+  console.log('getting session', sessionID)
+
+  otp
+    .get(`/session/${sessionID}`)
+    .then(({ jwt, sessionID, tokenExpires, sessionExpires }) => {
+      if (!jwt) return setState({ error: 'Expected a JWT token.' })
+      if (!sessionID) return setState({ error: 'Expected a sessionID.' })
+      if (!tokenExpires) return setState({ error: 'Expected a tokenExpires.' })
+      if (!sessionExpires) return setState({ error: 'Expected a sessionExpires.' })
+
+      token = jwt
+
+      setSession({
+        sessionID,
+        jwt,
+        isLoggedIn: true,
+        tokenExpires,
+        sessionExpires,
+      })
+
+      setState({
+        waiting: false,
+        error: undefined,
+      })
+
+      if (resolveSession) {
+        resolveSession()
+      }
+    })
+    .catch((err) => {
+      console.warn('there was an error fetching the session', err.message)
+    })
+}
 
 const checkSessionStatus = (sessionID, interval = undefined) => {
   if (interval) {
@@ -66,36 +101,16 @@ const checkSessionStatus = (sessionID, interval = undefined) => {
   }
 
   otp
-    .get(`/session/${sessionID}`)
-    .then(({ jwt, refresh, duration, expires }) => {
-      if (!jwt) return setState({ error: 'Expected a JWT token.' })
-      if (!refresh) return setState({ error: 'Expected a refresh key.' })
-      if (!duration) return setState({ error: 'Expected a duration.' })
-      if (!expires) return setState({ error: 'Expected an expiration timestamp.' })
+    .get(`/session/${sessionID}/status`)
+    .then(({ active }) => {
+      if (!active) return
 
-      token = jwt
-
-      setSession({
-        sessionID: refresh,
-        jwt,
-        isLoggedIn: true,
-        expires,
-        duration,
-      })
-
-      setState({
-        waiting: false,
-        error: undefined,
-      })
+      // otherwise session is ready, get it
 
       console.log('clearing interval timer')
       clearInterval(timer)
-
-      if (resolveSession) {
-        resolveSession()
-      }
+      getSession(sessionID)
     })
-    .catch(() => {})
 }
 
 export const login = (id) => {
@@ -122,19 +137,44 @@ export const login = (id) => {
   return pendingSession
 }
 
-export const logout = () => {
-  session.set({})
-  state.set({})
+const checkSession = () => {
+  const currentSession = get(session)
+  console.log('checking session...', currentSession)
+  const currentState = get(state)
 
-  if (!sessionID) {
-    return setState({ error: 'Must have an identifier to begin login.' })
+  const sessionExpires = new Date(currentSession.sessionExpires * 1000)
+  const tokenExpires = new Date(currentSession.tokenExpires * 1000)
+  const now = new Date()
+
+  if (!currentSession.jwt) {
+    sessionID = undefined
+
+    return
   }
 
-  if (!appID) {
-    throw new Error('use auth.setAppID(id) to connect your application.')
+  if (sessionExpires <= now) {
+    console.log('session has expired')
+    return logout()
   }
 
-  otp
-    .get(`/end-session/${sessionID}`)
-    .catch(() => setState({ error: 'There was an error during logout.' }))
+  if (tokenExpires <= now) {
+    console.log('token has expired, renewing...')
+    return getSession(currentSession.sessionID)
+  }
+
+  console.log('session is still good!')
 }
+
+session.subscribe(values => {
+  checkSession()
+
+  if (values?.sessionID) {
+    // console.log('updating global sessionID')
+    sessionID = values.sessionID
+  }
+
+  if (values?.jwt) {
+    // console.log('updating global jwt')
+    token = values.jwt
+  }
+})

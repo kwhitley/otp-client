@@ -1,15 +1,12 @@
 <script>
   import { onMount } from 'svelte'
   import { navlink } from 'svelte-navlink-action'
-  import { session } from '~/services/auth'
   import Avatar from '~/layout/Avatar.svelte'
-  import { profile } from '~/stores'
-  import { fetcher } from '~/services/auth'
   import { itty } from '~/services/api'
+  import { session } from '~/services/auth'
+  import { profile } from '~/stores'
 
   onMount(() => {
-    window.fetcher = fetcher
-
     itty.getProfile()
       .then(results => { $profile = results })
       .catch(err => console.error(err.message))

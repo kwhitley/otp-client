@@ -12,7 +12,7 @@
     e.preventDefault()
 
     itty
-      .updateProfile(changes)
+      .updateProfile($changes)
       .then(profile.set)
       .catch(err => {
         error = err.message
