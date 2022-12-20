@@ -1,1 +1,12 @@
-export const autofocus = node => setTimeout(() => node.focus(), 0)
+export const autofocus = (node, data) => {
+
+  const focus = () => {
+    setTimeout(() => node.focus(), 10)
+  }
+
+  return {
+    update(newData) {
+      focus()
+    }
+	}
+}

@@ -11,7 +11,7 @@
   const { appID } = data
 
   $: {
-    console.log(`loading app ${appID}`)
+    console.log(`loading app ${appID}`, $app)
     // otp.getApp(data.appID)
   }
 </script>
@@ -21,9 +21,9 @@
 {#if $app}
   <AppEditor app={app} appID={data.appID} />
 
-  <pre>
+  <!-- <pre>
     {JSON.stringify($app, null, 2)}
-  </pre>
+  </pre> -->
 {:else}
   <p>Loading app...</p>
 {/if}

@@ -72,6 +72,11 @@
     .page {
       flex: 1;
       max-width: var(--max-page-width);
+      display: flex;
+      flex-flow: column;
+      width: 100%;
+      max-width: var(--max-page-width);
+      flex: 1;
     }
   }
 </style>

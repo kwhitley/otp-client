@@ -45,6 +45,7 @@
     justify-content: center;
     font-size: 0.85em;
     color: var(--foreground-75);
+    margin-top: 3rem;
 
     &.sticky {
       position: fixed;

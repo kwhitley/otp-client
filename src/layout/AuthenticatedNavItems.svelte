@@ -16,7 +16,7 @@
 <!-- MARKUP -->
 {#if $session.isLoggedIn}
   <a href="/apps" use:navlink>
-    Apps
+    My Apps
   </a>
 
   <Avatar initial={$profile?.name?.[0] || $profile?.email?.[0]} />

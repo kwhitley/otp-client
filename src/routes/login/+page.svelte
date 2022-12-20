@@ -16,7 +16,7 @@
 
     auth
       .login(value)
-      .then(() => goto('/profile'))
+      .then(() => goto('/apps'))
   }
 </script>
 

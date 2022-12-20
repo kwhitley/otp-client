@@ -2,6 +2,7 @@
   export let active = false
   export let href
   export let minWidth
+  export let dim = false
 
   $: style = minWidth ? `min-width: ${minWidth};` : undefined
 </script>
@@ -11,6 +12,7 @@
   this={href ? 'a' : 'div'}
   class="card"
   class:active
+  class:dim
   {style}
   {href}
   >
@@ -32,6 +34,10 @@
     display: flex;
     flex-flow: column;
     position: relative;
+
+    &.dim {
+      opacity: 0.3;
+    }
   }
 
   :global(a.card) {

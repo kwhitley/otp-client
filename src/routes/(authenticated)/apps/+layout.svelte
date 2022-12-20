@@ -1,39 +1,47 @@
 <script>
+  import { goto } from '$app/navigation'
   import { onMount } from 'svelte'
   import { navlink } from 'svelte-navlink-action'
   import { flip } from 'svelte/animate'
   import { otp } from '~/services/api'
-  import { apps } from '~/stores'
+  import { app, apps } from '~/stores'
+  import AppsList from './AppsList.svelte'
 
-  const createApp = otp.createApp
+  const createApp = () => otp.createApp()
+                            .then(({ id }) => goto(`/apps/${id}`))
+
+  $: hasNew = $apps.find(a => !a.name)
 
   onMount(otp.getApps)
 </script>
 
 <!-- MARKUP -->
-<h2>Apps</h2>
+<h2>
+  Apps
+  {#if $app}
+    :
+    {$app.name || 'Unititled App'}
+
+    {#if $app.environment}
+      <small class="badge">{$app.environment}</small>
+    {/if}
+  {/if}
+</h2>
+
 <main class="split">
   <section class="menu">
-    {#if $apps?.length}
-      <div class="list-of-apps">
-        {#each $apps as app, index(app.id)}
-          <a
-            class="app-entry"
-            href={`/apps/${app.id}`}
-            animate:flip={{ duration: 200 }}
-            use:navlink
-            >
-            {app.name || 'Untitled App'}
+    <AppsList apps={$apps} />
 
-            <small>{app.id}</small>
-          </a>
-        {/each}
-      </div>
-    {:else}
-      <p>You currently have no apps.</p>
-    {/if}
-
-    <button on:click={createApp}>Create an App</button>
+    <button
+      on:click={createApp}
+      disabled={hasNew}
+      >
+      {#if hasNew}
+        Name your app to continue
+      {:else}
+        Create an App
+      {/if}
+    </button>
   </section>
 
   <section class="app-editor">
@@ -44,6 +52,8 @@
 <!-- STLYES -->
 <style lang="scss">
   main {
+    gap: 3rem;
+
     & > * {
       flex: 4;
     }
@@ -89,12 +99,24 @@
   }
 
   .app-editor {
-    overflow: hidden;
-
+    min-width: 20em;
   }
 
   :global(.app-entry.active:not(#foo)) {
     pointer-events: none;
     background-color: var(--foreground-25);
+  }
+
+  h2 {
+    margin-bottom: 1.5rem;
+
+    a {
+      color: var(--foreground-color);
+
+      &:hover {
+        color: var(--link-color);
+        text-decoration: none;
+      }
+    }
   }
 </style>
