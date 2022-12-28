@@ -28,7 +28,12 @@ export const otp = {
                             .catch(err => {
                               console.log('error loading app')
                             }),
-  createApp: () => fetcher(OTP_FETCHER).post('/my/apps').then(v => otp.getApps() && v),
+  createApp: () => fetcher(OTP_FETCHER)
+                    .post('/my/apps')
+                    .then(v => otp.getApps() && v)
+                    .catch(err => {
+                      console.log('There was an error creating this app', err.message)
+                    }),
   updateApp: (id: string, changes: any[]) =>
                 fetcher(OTP_FETCHER)
                   .patch(`/my/apps/${id}`, changes)

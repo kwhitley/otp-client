@@ -10,9 +10,9 @@
   const createApp = () => otp.createApp()
                             .then(({ id }) => goto(`/apps/${id}`))
 
-  $: hasNew = $apps.find(a => !a.name)
+  $: hasNew = $apps.find?.(a => !a.name)
 
-  onMount(otp.getApps)
+  // onMount(otp.getApps)
 </script>
 
 <!-- MARKUP -->

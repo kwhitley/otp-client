@@ -6,6 +6,10 @@
   import Slider from '~/components/Slider.svelte'
   import { otp } from '~/services/api'
   import { editable } from '~/utils/editable'
+  import { generateHash } from 'supergeneric/generateHash'
+  import Dice from '~/components/icons/Dice.svelte'
+  import Copy from '~/components/icons/Copy.svelte'
+  import { toast } from '~/services/toast'
 
   export let app
   export let appID
@@ -21,6 +25,15 @@
       .catch(err => {
         error = err.message
       })
+  }
+
+  const reroll = () => generateHash(128)
+
+  const copyToClipboard = async (e, value) => {
+    e.stopPropagation()
+    await navigator.clipboard.writeText(value)
+
+    toast(`Copied key to clipboard.`, { duration: '2 seconds' })
   }
 </script>
 
@@ -105,22 +118,58 @@
   <section class="inputs">
     <label>
       OTP Garden API Key
-      <textarea
-        type="text"
-        placeholder="enter a custom secret or roll a new one"
-        bind:value={$local.keys.api}
-        use:autosize
-        />
+      <div class="secret">
+        <textarea
+          type="text"
+          placeholder="enter a custom secret or roll a new one"
+          bind:value={$local.keys.api}
+          use:autosize
+          />
+        <div class="icon-actions">
+          <div
+            class="icon"
+            title="Generate a new value"
+            on:click={() => $local.keys.api = reroll()}
+            >
+            <Dice />
+          </div>
+          <div
+            class="icon"
+            title="Copy to clipboard"
+            on:click={(e) => copyToClipboard(e, $local.keys.api)}
+            >
+            <Copy />
+          </div>
+        </div>
+      </div>
     </label>
 
     <label>
       JWT Secret (signature)
-      <textarea
-        type="text"
-        placeholder="enter a custom secret or roll a new one"
-        bind:value={$local.keys.tokenSecret}
-        use:autosize
-        />
+      <div class="secret">
+        <textarea
+          type="text"
+          placeholder="enter a custom secret or roll a new one"
+          bind:value={$local.keys.tokenSecret}
+          use:autosize
+          />
+        <div class="icon-actions">
+          <div
+            class="icon"
+            title="Generate a new value"
+            on:click={() => $local.keys.tokenSecret = reroll()}
+            >
+            <Dice />
+          </div>
+          <div
+            class="icon"
+            title="Copy to clipboard"
+            on:click={(e) => copyToClipboard(e, $local.keys.tokenSecret)}
+            >
+            <Copy />
+          </div>
+        </div>
+      </div>
     </label>
   </section>
 
@@ -139,7 +188,7 @@
 
   <Slider
     label="JWT tokens last"
-    bind:value={$local.durations.session}
+    bind:value={$local.durations.token}
     options={[
       '1 minute',
       '5 minutes',
@@ -177,10 +226,10 @@
     {/if}
   </section>
 </form>
-<!--
+
 <pre>
-  {JSON.stringify($local, null, 2)}
-</pre> -->
+  {JSON.stringify($changes, null, 2)}
+</pre>
 
 <!-- STYLES -->
 <style lang="scss">
@@ -191,5 +240,37 @@
   form {
     display: flex;
     flex-flow: column;
+  }
+
+  .icon {
+    color: var(--foreground-color);
+    height: 1.4rem;
+    width: 1.4rem;
+    opacity: 0.7;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+  }
+
+  .secret {
+    display: flex;
+    justify-content: stretch;
+    align-items: flex-start;
+    gap: 0.6rem;
+
+    textarea {
+      flex: 1;
+    }
+
+    .icon-actions {
+      display: flex;
+      flex-flow: column;
+      flex: 0;
+      gap: 0.3rem;
+    }
+
   }
 </style>

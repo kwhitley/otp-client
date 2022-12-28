@@ -7,13 +7,15 @@
   export let format = v => v
   export let value
 
-  let index = options?.findIndex(i => i === value)
-
+  let values = []
   const getValue = (index: number) => options?.[index]
 
   $: currentValue = options?.[values[0]]
 
-  let values = [index]
+  $: {
+    let index = options?.findIndex(i => i === value)
+    values = [index]
+  }
 </script>
 
 <!-- MARKUP -->

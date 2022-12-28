@@ -35,34 +35,35 @@
     </p>
 
     <form on:submit={onSubmit}>
-      <label>
-        Name
-        <input type="text" bind:value={$local.name} />
-      </label>
+      <section class="inputs">
+        <label>
+          Name
+          <input type="text" bind:value={$local.name} />
+        </label>
 
-      <label>
-        Email
-        <input type="text" bind:value={$local.email} disabled />
-      </label>
+        <label>
+          Email
+          <input type="text" bind:value={$local.email} disabled />
+        </label>
 
-      <label>
-        Phone Number (SMS)
-        <input type="text" bind:value={$local.sms} />
-      </label>
+        <label>
+          Phone Number (SMS)
+          <input type="text" bind:value={$local.sms} />
+        </label>
 
-      <section class="actions">
-        {#if $dirty}
-          <button
-            class="secondary"
-            in:fly={{ x: 50, duration: 200 }}
-            out:fly={{ x: -200, duration: 200 }}
-            on:click={revert}
-            >
-            Cancel
-          </button>
-        {/if}
-        <button type="submit" disabled={!$dirty}>Save Changes</button>
-      </section>
+        <section class="actions">
+          <button type="submit" disabled={!$dirty}>Save Changes</button>
+          {#if $dirty}
+            <button
+              class="secondary"
+              in:fly={{ x: 50, duration: 200 }}
+              out:fly={{ x: -200, duration: 200 }}
+              on:click={revert}
+              >
+              Cancel
+            </button>
+          {/if}
+        </section>
     </form>
   </Card>
 

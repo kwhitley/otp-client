@@ -7,13 +7,11 @@ let appID = undefined
 let timer = undefined
 let token = undefined
 let sessionID = undefined
+let refreshTimer = undefined
 let pendingSession
 let resolveSession
 
-export const fetcher = (config = {}) => {
-  if (token) return ittyFetcher({ ...config, headers: { Authorization: `Bearer ${token}` }})
-  return ittyFetcher(config)
-}
+const REFRESH_TOKEN_WINDOW = 10 * 1000 // 10 seconds
 
 export const setAppID = (id: string) => {
   appID = id
@@ -64,7 +62,8 @@ const getSession = (sessionID: string) => {
 
   otp
     .get(`/session/${sessionID}`)
-    .then(({ jwt, sessionID, tokenExpires, sessionExpires }) => {
+    .then((response) => {
+      const { jwt, sessionID, tokenExpires, sessionExpires } = response
       if (!jwt) return setState({ error: 'Expected a JWT token.' })
       if (!sessionID) return setState({ error: 'Expected a sessionID.' })
       if (!tokenExpires) return setState({ error: 'Expected a tokenExpires.' })
@@ -88,10 +87,28 @@ const getSession = (sessionID: string) => {
       if (resolveSession) {
         resolveSession()
       }
+
+      refreshSessionBeforeExpiration(response)
+
+      // set timer for refresh
+      // const refreshDate = tokenExpires * 1000 - 30000 - Date.now()
+      // console.log('token expires at', new Date(tokenExpires * 1000))
+      // console.log('refreshing in', refreshDate / 1000|0, 'seconds')
+      // clearTimeout(refreshTimer)
+      // refreshTimer = setTimeout(() => getSession(sessionID), refreshDate)
     })
     .catch((err) => {
       console.warn('there was an error fetching the session', err.message)
     })
+}
+
+const refreshSessionBeforeExpiration = (session) => {
+  const { tokenExpires, sessionID } = session
+  const refreshDate = tokenExpires * 1000 - Date.now() - REFRESH_TOKEN_WINDOW
+  console.log('token expires at', new Date(tokenExpires * 1000))
+  console.log('refreshing in', refreshDate / 1000|0, 'seconds')
+  clearTimeout(refreshTimer)
+  refreshTimer = setTimeout(() => getSession(sessionID), refreshDate)
 }
 
 const checkSessionStatus = (sessionID, interval = undefined) => {
@@ -142,9 +159,9 @@ const checkSession = () => {
   console.log('checking session...', currentSession)
   const currentState = get(state)
 
-  const sessionExpires = new Date(currentSession.sessionExpires * 1000)
-  const tokenExpires = new Date(currentSession.tokenExpires * 1000)
-  const now = new Date()
+  const sessionExpires = +new Date(currentSession.sessionExpires * 1000)
+  const tokenExpires = +new Date(currentSession.tokenExpires * 1000)
+  const now = +new Date()
 
   if (!currentSession.jwt) {
     sessionID = undefined
@@ -158,11 +175,12 @@ const checkSession = () => {
   }
 
   if (tokenExpires <= now) {
-    console.log('token has expired, renewing...')
+    console.log('token has expired or is about to expire, renewing...')
     return getSession(currentSession.sessionID)
   }
 
   console.log('session is still good!')
+  refreshSessionBeforeExpiration(currentSession)
 }
 
 session.subscribe(values => {
@@ -178,3 +196,9 @@ session.subscribe(values => {
     token = values.jwt
   }
 })
+
+export const fetcher = (config = {}) => {
+  if (token) return ittyFetcher({ ...config, headers: { Authorization: `Bearer ${token}` }})
+
+  return ittyFetcher(config)
+}
