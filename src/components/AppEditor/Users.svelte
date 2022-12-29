@@ -72,7 +72,7 @@
     </section>
   </Card>
 
-  <Card dim={!$local.users.endpoints?.createUser?.url}>
+  <!-- <Card dim={!$local.users.endpoints?.createUser?.url}>
     <h3>Create User</h3>
 
     <section class="inputs">
@@ -94,7 +94,7 @@
           />
       </label>
     </section>
-  </Card>
+  </Card> -->
 </section>
 
 <label>
@@ -126,7 +126,12 @@
 </label>
 
 <h3>Example</h3>
-<p>This is an example call of what we'll send your endpoint:</p>
+<p>
+  This is an example call of what we'll send your endpoint during user logins.
+</p>
+<p>
+  Please note, we attach your OTP Garden API key as the header <strong>otpg-api-key</strong>.
+  Please ensure this key is present/matches on any requests to your API endpoint!</p>
 <pre class="code">{fetchExample}</pre>
 
 <!-- STYLES -->
@@ -184,5 +189,9 @@
     font-size: 0.9rem;
     white-space: pre-wrap;
     overflow: scroll;
+  }
+
+  strong {
+    color: var(--white);
   }
 </style>

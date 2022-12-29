@@ -1,4 +1,5 @@
 <script>
+  import { goto } from '$app/navigation'
   import { page } from '$app/stores'
   import { generateHash } from 'supergeneric/generateHash'
   import { fly } from 'svelte/transition'
@@ -13,6 +14,7 @@
   import { otp } from '~/services/api'
   import { toast } from '~/services/toast'
   import { editable } from '~/utils/editable'
+  import General from './General.svelte'
   import Sessions from './Sessions.svelte'
   import Users from './Users.svelte'
 
@@ -23,6 +25,10 @@
 
   $: console.log('editor page is', editorPage)
   let error
+
+  $: if (editorPage === '') {
+    goto('?general')
+  }
 
   const { changes, dirty, revert, local } = editable(app, { trim: true })
 
@@ -62,35 +68,16 @@
     {/if}
   </section>
 
-  <section class="split">
-    <label>
-      Name
-      <input
-        type="text"
-        placeholder="enter an Application Name"
-        bind:value={$local.name}
-        use:autofocus={appID}
-        />
-    </label>
-
-    <label>
-      Environment
-      <input
-        type="text"
-        placeholder="e.g. production"
-        bind:value={$local.environment}
-        />
-    </label>
-  </section>
-
-
   <Tabs items={[
+    { label: 'General', path: '?general' },
     { label: 'Users', path: '?users' },
     { label: 'Tokens & Sessions', path: '?sessions' },
     ]} />
 
 
-
+  {#if editorPage === 'general' }
+    <General local={local} />
+  {/if}
 
   {#if editorPage === 'users'}
     <Users local={local} />
@@ -256,9 +243,9 @@
 
 </form>
 
-<pre>
+<!-- <pre>
   {JSON.stringify($changes, null, 2)}
-</pre>
+</pre> -->
 
 <!-- STYLES -->
 <style lang="scss">
@@ -273,7 +260,6 @@
 
   form .actions {
     margin-top: 0;
-    margin-bottom: 1.5em;
   }
 
   .icon {

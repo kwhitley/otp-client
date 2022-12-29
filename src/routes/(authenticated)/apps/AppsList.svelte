@@ -16,6 +16,8 @@
 <!-- MARKUP -->
 {#if apps?.length}
   <div transition:fade={{ duration: 200 }} class="list-of-apps">
+    <h4>Available Apps</h4>
+
     {#each sorted as app, index(app.id)}
       <a
         class="app-entry"

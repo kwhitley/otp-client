@@ -194,7 +194,7 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-size: clamp(2.5em, 17vmin, 5em);
+  font-size: clamp(2.5rem, 17vmin, 5rem);
   line-height: 0.8em;
   letter-spacing: -0.06em;
   font-weight: 400;
@@ -205,15 +205,22 @@ h2, h3 {
 }
 
 h2 {
-  font-size: 2.5em;
+  font-size: 2.5rem;
   font-weight: 100;
 }
 
 h3 {
-  font-size: 1.8em;
+  font-size: 1.8rem;
   margin-bottom: 0.6rem;
   font-weight: 400;
   letter-spacing: 0;
+}
+
+h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  font-weight: 200;
 }
 
 p, li, caption {

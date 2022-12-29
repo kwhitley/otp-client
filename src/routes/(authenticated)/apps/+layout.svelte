@@ -1,6 +1,6 @@
 <script>
   import { goto } from '$app/navigation'
-  import { onMount } from 'svelte'
+  import { onMount, onDestroy } from 'svelte'
   import { navlink } from 'svelte-navlink-action'
   import { flip } from 'svelte/animate'
   import { otp } from '~/services/api'
@@ -13,21 +13,12 @@
   $: hasNew = $apps.find?.(a => !a.name)
 
   // onMount(otp.getApps)
+  onDestroy(() => {
+    $app = undefined
+  })
 </script>
 
 <!-- MARKUP -->
-<h2>
-  Apps
-  {#if $app}
-    :
-    {$app.name || 'Unititled App'}
-
-    {#if $app.environment}
-      <small class="badge">{$app.environment}</small>
-    {/if}
-  {/if}
-</h2>
-
 <main class="split">
   <section class="menu">
     <AppsList apps={$apps} />
@@ -45,6 +36,18 @@
   </section>
 
   <section class="app-editor">
+      {#if $app}
+        <h2>App
+          : {$app.name || 'Unititled App'}
+          {#if $app.environment}
+            <small class="badge">{$app.environment}</small>
+          {/if}
+        </h2>
+      {:else}
+        <section class="centered">
+          It looks like you don't have any apps yet.  <a on:click={createApp}>Create one</a> to get started!
+        </section>
+      {/if}
     <slot />
   </section>
 </main>
@@ -53,6 +56,7 @@
 <style lang="scss">
   main {
     gap: 3rem;
+    z-index: 1;
 
     & > * {
       flex: 4;
