@@ -23,6 +23,7 @@
     flex-flow: row wrap;
     border-bottom: var(--tabs-line-thickness) solid var(--foreground-25);
     margin-top: 1em;
+    margin-bottom: 2rem;
     font-size: 1.2rem;
     align-items: flex-end;
     min-height: 3.2em;

@@ -1,4 +1,5 @@
 <script>
+  import { page } from '$app/stores'
   import { generateHash } from 'supergeneric/generateHash'
   import { fly } from 'svelte/transition'
   import { autofocus } from '~/actions/autofocus'
@@ -7,14 +8,20 @@
   import Copy from '~/components/icons/Copy.svelte'
   import Dice from '~/components/icons/Dice.svelte'
   import Slider from '~/components/Slider.svelte'
+  import Tabs from '~/components/Tabs.svelte'
+  import Toggle from '~/components/Toggle.svelte'
   import { otp } from '~/services/api'
   import { toast } from '~/services/toast'
   import { editable } from '~/utils/editable'
-  import Toggle from '~/components/Toggle.svelte'
-  import Tabs from '~/components/Tabs.svelte'
+  import Sessions from './Sessions.svelte'
+  import Users from './Users.svelte'
 
   export let app
   export let appID
+
+  $: editorPage = new URL($page.url)?.search.replace(/^\?/, '')
+
+  $: console.log('editor page is', editorPage)
   let error
 
   const { changes, dirty, revert, local } = editable(app, { trim: true })
@@ -41,6 +48,20 @@
 
 <!-- MARKUP -->
 <form on:submit={onSubmit}>
+  <section class="actions">
+    <button type="submit" disabled={!$dirty}>Save Changes</button>
+    {#if $dirty}
+      <button
+        class="secondary"
+        in:fly={{ x: 50, duration: 200 }}
+        out:fly={{ x: -200, duration: 200 }}
+        on:click={revert}
+        >
+        Cancel
+      </button>
+    {/if}
+  </section>
+
   <section class="split">
     <label>
       Name
@@ -62,12 +83,24 @@
     </label>
   </section>
 
+
   <Tabs items={[
     { label: 'Users', path: '?users' },
-    { label: 'Tokens & Sessions', path: '?tokens' },
+    { label: 'Tokens & Sessions', path: '?sessions' },
     ]} />
 
-  <Toggle label="Simple User List" bind:value={$local.users.allowAnyone} />
+
+
+
+  {#if editorPage === 'users'}
+    <Users local={local} />
+  {/if}
+
+  {#if editorPage === 'sessions'}
+    <Sessions local={local} />
+  {/if}
+
+  <!-- <Toggle label="Simple User List" bind:value={$local.users.allowAnyone} />
 
   <h3>Endpoints</h3>
 
@@ -219,20 +252,8 @@
       '1 week',
     ]}
     />
+ -->
 
-  <section class="actions">
-    <button type="submit" disabled={!$dirty}>Save Changes</button>
-    {#if $dirty}
-      <button
-        class="secondary"
-        in:fly={{ x: 50, duration: 200 }}
-        out:fly={{ x: -200, duration: 200 }}
-        on:click={revert}
-        >
-        Cancel
-      </button>
-    {/if}
-  </section>
 </form>
 
 <pre>
@@ -248,6 +269,11 @@
   form {
     display: flex;
     flex-flow: column;
+  }
+
+  form .actions {
+    margin-top: 0;
+    margin-bottom: 1.5em;
   }
 
   .icon {
@@ -279,6 +305,5 @@
       flex: 0;
       gap: 0.3rem;
     }
-
   }
 </style>

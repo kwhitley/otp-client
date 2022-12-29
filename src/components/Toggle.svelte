@@ -30,7 +30,6 @@
     font-family: sans-serif;
     gap: 1em;
     user-select: none;
-    margin-top: 1em;
   }
 
   /* checkbox */
