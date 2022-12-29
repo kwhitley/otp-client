@@ -18,7 +18,7 @@
   }
 
   .toggle {
-    --active-color: #00aaee;
+    --active-color: var(--accent-color);
     --inactive-color: rgb(209 213 219);
     --rail-height: 1.5rem;
     --rail-ratio: 1.8;

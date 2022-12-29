@@ -11,6 +11,7 @@
   import { toast } from '~/services/toast'
   import { editable } from '~/utils/editable'
   import Toggle from '~/components/Toggle.svelte'
+  import Tabs from '~/components/Tabs.svelte'
 
   export let app
   export let appID
@@ -60,6 +61,11 @@
         />
     </label>
   </section>
+
+  <Tabs items={[
+    { label: 'Users', path: '?users' },
+    { label: 'Tokens & Sessions', path: '?tokens' },
+    ]} />
 
   <Toggle label="Simple User List" bind:value={$local.users.allowAnyone} />
 

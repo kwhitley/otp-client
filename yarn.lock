@@ -1639,10 +1639,10 @@ svelte-hmr@^0.15.1:
   resolved "https://registry.yarnpkg.com/svelte-hmr/-/svelte-hmr-0.15.1.tgz#d11d878a0bbb12ec1cba030f580cd2049f4ec86b"
   integrity sha512-BiKB4RZ8YSwRKCNVdNxK/GfY+r4Kjgp9jCLEy0DuqAKfmQtpL38cQK3afdpjw4sqSs4PLi3jIPJIFp259NkZtA==
 
-svelte-navlink-action@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/svelte-navlink-action/-/svelte-navlink-action-0.1.5.tgz#eea3719e380503d0516e52e319d9705b19fc070e"
-  integrity sha512-154hP2a54r/slMvyBYv8sEW7DfWA1GqmTKE7Lh2HGWiWa+TjWIUifIHyGGuH1KGrLXKPI21fvMPAyzhipQ3xiA==
+svelte-navlink-action@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/svelte-navlink-action/-/svelte-navlink-action-0.2.0.tgz#437b25f183e1df7377c8a900c6599663c637f48a"
+  integrity sha512-Ee+iIOMtdSOn9+DSlwXMaRNkCHh5GpaARTv2bb5Xqu+Vy4PeED58mcgOaZaMgCCp8B/wgZ5FdMKtSie5K5fIQg==
 
 svelte-preprocess@^4.0.0:
   version "4.10.7"

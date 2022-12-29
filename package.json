@@ -41,7 +41,7 @@
     "just-compare": "^2.2.2",
     "just-diff": "^5.1.1",
     "supergeneric": "^2.1.0",
-    "svelte-navlink-action": "^0.1.5",
+    "svelte-navlink-action": "^0.2.0",
     "svelte-range-slider-pips": "^2.1.1"
   }
 }
