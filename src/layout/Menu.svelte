@@ -61,8 +61,5 @@
     border-bottom: var(--navlink-border) solid var(--accent-color);
     margin-bottom: calc(-1 * var(--navlink-border));
     text-decoration: none;
-
-    cursor: default;
-    pointer-events: none;
   }
 </style>

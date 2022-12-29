@@ -57,8 +57,9 @@ label {
   display: flex;
   gap: 0.3rem;
   flex-flow: column;
-  font-weight: 600;
+  font-weight: 400;
   user-select: none;
+  color: var(--foreground-50);
 
   &.inline {
     flex-flow: row;
@@ -77,11 +78,6 @@ label {
       // flex: 1 calc(100% - var(--label-width)) calc(100% - var(--label-width));
     }
   }
-
-  &:not(:last-child) {
-    margin-bottom: 1.5em;
-  }
-
 }
 
 input::placeholder, textarea::placeholder {
@@ -93,6 +89,7 @@ button {
   color: var(--button-foreground-primary);
   border-color: var(--foreground-10);
   border-radius: calc(0.6 * var(--button-border-radius));
+  user-select: none;
 
   &.secondary {
     background-color: var(--button-background-secondary);
@@ -124,8 +121,7 @@ form {
     margin-top: 1rem;
     flex: 1 100%;
     display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-end;
+    flex-flow: row-reverse wrap;
     gap: 0.5rem;
 
     @media screen and (max-width: 30em) {
@@ -134,4 +130,11 @@ form {
       }
     }
   }
+}
+
+.inputs {
+  display: flex;
+  flex: 1;
+  flex-flow: column;
+  gap: 1.3rem;
 }

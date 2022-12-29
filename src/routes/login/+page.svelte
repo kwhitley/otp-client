@@ -5,7 +5,7 @@
   import SearchInput from '~/components/SearchInput.svelte'
 
   const { user, state } = auth
-  let value = ''
+  let value = 'krwhitley@gmail.com'
   let INITIAL_BUTTON_TEXT = 'Go'
   let buttonText = INITIAL_BUTTON_TEXT
 
@@ -16,7 +16,7 @@
 
     auth
       .login(value)
-      .then(() => goto('/profile'))
+      .then(() => goto('/apps'))
   }
 </script>
 

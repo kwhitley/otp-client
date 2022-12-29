@@ -1,7 +1,10 @@
 import * as auth from '~/services/auth'
 
-auth.setAppID('test')
+auth.setAppID('otpg')
 
 export const load = async ({ url: { pathname } }) => {
-	return { pathname }
+	return {
+    rootPath: pathname.match(/^\/\w+/)?.[0],
+    pathname
+  }
 }

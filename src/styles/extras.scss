@@ -56,3 +56,20 @@
     -moz-transform: rotate(0.5deg);
   }
 }
+
+.card h3 {
+  font-size: 1.5rem;
+}
+
+.badge {
+  --vertical-padding: 0.15rem;
+  font-size: 0.8rem;
+  color: var(--background-color);
+  background-color: var(--foreground-75);
+  letter-spacing: 0;
+  padding: var(--vertical-padding) calc(var(--vertical-padding) * 2.5);
+  font-weight: 400;
+  border-radius: calc(var(--border-radius) * 0.5);
+  position: relative;
+  top: calc(-1.5 * var(--vertical-padding));
+}

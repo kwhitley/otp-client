@@ -22,7 +22,6 @@
   <title>{pageTitle()}</title>
   <meta name="description" content="Super-secret, secret project that shall remain secret until it's no longer a secret." />
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-  <html lang="en" />
 </svelte:head>
 
 <main>
@@ -34,11 +33,11 @@
   </Nav>
 
   <section class="page-container" class:constrained>
-    {#key data.pathname}
+    {#key data.rootPath}
       <div
         class="page"
-        in:fly={{ x: 100, duration: 200, delay: 110 }}
-        out:fly={{ x: -100, duration: 100 }}
+        in:fly|local={{ x: 100, duration: 200, delay: 110 }}
+        out:fly|local={{ x: -100, duration: 100 }}
         >
         <slot />
       </div>
@@ -73,6 +72,11 @@
     .page {
       flex: 1;
       max-width: var(--max-page-width);
+      display: flex;
+      flex-flow: column;
+      width: 100%;
+      max-width: var(--max-page-width);
+      flex: 1;
     }
   }
 </style>
