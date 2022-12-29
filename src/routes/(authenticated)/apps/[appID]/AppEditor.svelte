@@ -1,15 +1,16 @@
 <script>
+  import { generateHash } from 'supergeneric/generateHash'
   import { fly } from 'svelte/transition'
   import { autofocus } from '~/actions/autofocus'
   import { autosize } from '~/actions/autosize'
   import Card from '~/components/Card.svelte'
+  import Copy from '~/components/icons/Copy.svelte'
+  import Dice from '~/components/icons/Dice.svelte'
   import Slider from '~/components/Slider.svelte'
   import { otp } from '~/services/api'
-  import { editable } from '~/utils/editable'
-  import { generateHash } from 'supergeneric/generateHash'
-  import Dice from '~/components/icons/Dice.svelte'
-  import Copy from '~/components/icons/Copy.svelte'
   import { toast } from '~/services/toast'
+  import { editable } from '~/utils/editable'
+  import Toggle from '~/components/Toggle.svelte'
 
   export let app
   export let appID
@@ -60,11 +61,12 @@
     </label>
   </section>
 
+  <Toggle label="Simple User List" bind:value={$local.users.allowAnyone} />
 
   <h3>Endpoints</h3>
 
   <section class="split flexed">
-    <Card dim={!$local.endpoints?.getUser?.url}>
+    <Card dim={!$local.users.endpoints?.getUser?.url}>
       <h3>Get User/Validate</h3>
 
       <section class="inputs">
@@ -72,7 +74,7 @@
           <textarea
             type="text"
             placeholder="e.g. https://foo.bar/validate/user"
-            bind:value={$local.endpoints.getUser.url}
+            bind:value={$local.users.endpoints.getUser.url}
             use:autosize
             />
         </label>
@@ -82,13 +84,13 @@
           <input
             type="text"
             placeholder="POST"
-            bind:value={$local.endpoints.createUser.method}
+            bind:value={$local.users.endpoints.createUser.method}
             />
         </label>
       </section>
     </Card>
 
-    <Card dim={!$local.endpoints?.createUser?.url}>
+    <Card dim={!$local.users.endpoints?.createUser?.url}>
       <h3>Create User</h3>
 
       <section class="inputs">
@@ -96,7 +98,7 @@
           <textarea
             type="text"
             placeholder="e.g. https://foo.bar/users"
-            bind:value={$local.endpoints.createUser.url}
+            bind:value={$local.users.endpoints.createUser.url}
             use:autosize
             />
         </label>
@@ -106,7 +108,7 @@
           <input
             type="text"
             placeholder="POST"
-            bind:value={$local.endpoints.createUser.method}
+            bind:value={$local.users.endpoints.createUser.method}
             />
         </label>
       </section>
