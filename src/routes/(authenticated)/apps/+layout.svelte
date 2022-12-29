@@ -43,12 +43,13 @@
             <small class="badge">{$app.environment}</small>
           {/if}
         </h2>
+
+        <slot />
       {:else}
         <section class="centered">
-          It looks like you don't have any apps yet.  <a on:click={createApp}>Create one</a> to get started!
+          <p>It looks like you don't have any apps yet.  <a on:click={createApp}>Create one</a> to get started!</p>
         </section>
       {/if}
-    <slot />
   </section>
 </main>
 
@@ -74,34 +75,6 @@
     }
   }
 
-  .list-of-apps {
-    display: flex;
-    flex-flow: column;
-    gap: 0.2rem;
-  }
-
-  .app-entry {
-    color: var(--foreground-color);
-    background-color: var(--foreground-5);
-    padding: 0.8rem;
-    display: flex;
-    flex-flow: column;
-    align-items: flex-start;
-
-    &:hover {
-      text-decoration: none;
-      background-color: var(--foreground-10);
-    }
-
-    small {
-      font-weight: 100;
-      font-size: 0.8rem;
-      margin-top: 0.1rem;
-      display: flex;
-      color: var(--foreground-25);
-    }
-  }
-
   .app-editor {
     min-width: 20em;
   }
@@ -109,18 +82,5 @@
   :global(.app-entry.active:not(#foo)) {
     pointer-events: none;
     background-color: var(--foreground-25);
-  }
-
-  h2 {
-    margin-bottom: 1.5rem;
-
-    a {
-      color: var(--foreground-color);
-
-      &:hover {
-        color: var(--link-color);
-        text-decoration: none;
-      }
-    }
   }
 </style>

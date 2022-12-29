@@ -29,3 +29,11 @@
 .flexed {
   flex: 1;
 }
+
+.centered {
+  display: flex;
+  min-height: 10vh;
+  justify-content: center;
+  align-items: center;
+  padding: 0 5rem;
+}
