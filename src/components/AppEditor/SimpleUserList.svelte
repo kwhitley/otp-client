@@ -17,9 +17,7 @@
   embed a JWT claim with the email address in the final user token, such as the one below:
 </p>
 
-<pre>
-  {`{ email: "foo@bar.com" }`}
-</pre>
+<pre>{`{ email: "foo@bar.com" }`}</pre>
 
 <label>
   <textarea
@@ -32,10 +30,4 @@
 
 <!-- STYLES -->
 <style lang="scss">
-  textarea {
-    font-family:'Courier New', Courier, monospace;
-    font-weight: 400;
-    font-size: 1.2rem;
-    line-height: 1.4em;
-  }
 </style>

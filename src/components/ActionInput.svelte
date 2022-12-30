@@ -43,7 +43,12 @@
 </script>
 
 <!-- MARKUP -->
-<form class="search-input" on:submit={submitWrapper} disabled={disabled}>
+<form
+  class="search-input"
+  class:shaking={shake}
+  on:submit={submitWrapper}
+  disabled={disabled}
+  >
   <input
     use:typeAction
     placeholder={placeholder}
@@ -53,7 +58,6 @@
     use:autofocus
     style="min-height:{minHeight};"
     disabled={disabled}
-    class:shaking={shake}
     />
 
     <button type="submit" disabled={!isValid || disabled}>
