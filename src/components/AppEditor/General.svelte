@@ -1,26 +1,12 @@
 <script>
-  import { page } from '$app/stores'
-  import { generateHash } from 'supergeneric/generateHash'
-  import { fly } from 'svelte/transition'
   import { autofocus } from '~/actions/autofocus'
-  import { autosize } from '~/actions/autosize'
-  import Card from '~/components/Card.svelte'
-  import Copy from '~/components/icons/Copy.svelte'
-  import Dice from '~/components/icons/Dice.svelte'
-  import Slider from '~/components/Slider.svelte'
-  import Tabs from '~/components/Tabs.svelte'
-  import Toggle from '~/components/Toggle.svelte'
-  import { otp } from '~/services/api'
-  import { toast } from '~/services/toast'
-  import { editable } from '~/utils/editable'
-  import Sessions from './Sessions.svelte'
-  import Users from './Users.svelte'
+  import { fade } from 'svelte/transition'
 
   export let local
 </script>
 
 <!-- MARKUP -->
-<section class="inputs">
+<section class="inputs" in:fade={{ duration: 200 }}>
   <label>
     Name
     <input

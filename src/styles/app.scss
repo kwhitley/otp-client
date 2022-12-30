@@ -424,3 +424,19 @@ pre {
 * + pre {
   margin-top: 2em;
 }
+
+strong {
+  color: var(--white);
+}
+
+pre {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  border-radius: var(--border-radius);
+  border: var(--border-thickness) solid var(--foreground-5);
+  background-color: var(--foreground-5);
+  padding: 1.5rem;
+  font-size: 1rem;
+  white-space: pre-wrap;
+  overflow: scroll;
+}

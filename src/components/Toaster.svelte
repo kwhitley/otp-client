@@ -32,6 +32,7 @@
 
     &.error {
       background-color: #c62c2c;
+      color: #fff;
     }
   }
 

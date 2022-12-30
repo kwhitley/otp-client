@@ -45,9 +45,11 @@
         </h2>
 
         <slot />
-      {:else}
+      {/if}
+
+      {#if !$apps.length}
         <section class="centered">
-          <p>It looks like you don't have any apps yet.  <a on:click={createApp}>Create one</a> to get started!</p>
+          <p>It looks like you don't have any apps yet. <a on:click={createApp}>Create one</a> to get started!</p>
         </section>
       {/if}
   </section>

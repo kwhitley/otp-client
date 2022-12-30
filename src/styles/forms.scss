@@ -14,10 +14,12 @@
 input[type=text], textarea, button {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1.1rem;
-  padding: 0.4rem 0.65rem;
+  padding: 0.5rem 0.65rem;
+  line-height: 1.5em;
+  letter-spacing: 0.02em;
   border-radius: calc(0.6 * var(--border-radius));
   background: var(--input-background-color);
-  border: var(--input-border-thickness) solid var(--foreground-25);
+  border: var(--input-border-thickness) solid var(--foreground-50);
   width: 100%;
   color: var(--foreground-color);
   position: relative;
@@ -130,4 +132,34 @@ form {
   flex: 1;
   flex-flow: column;
   gap: 1.3rem;
+}
+
+.shaking {
+  -webkit-animation: kf_shake 0.35s 1 linear;
+  -moz-animation: kf_shake 0.35s 1 linear;
+  -o-animation: kf_shake 0.35s 1 linear;
+}
+@-webkit-keyframes kf_shake {
+  0% { -webkit-transform: translate(30px); }
+  20% { -webkit-transform: translate(-30px); }
+  40% { -webkit-transform: translate(15px); }
+  60% { -webkit-transform: translate(-15px); }
+  80% { -webkit-transform: translate(8px); }
+  100% { -webkit-transform: translate(0px); }
+}
+@-moz-keyframes kf_shake {
+  0% { -moz-transform: translate(30px); }
+  20% { -moz-transform: translate(-30px); }
+  40% { -moz-transform: translate(15px); }
+  60% { -moz-transform: translate(-15px); }
+  80% { -moz-transform: translate(8px); }
+  100% { -moz-transform: translate(0px); }
+}
+@-o-keyframes kf_shake {
+  0% { -o-transform: translate(30px); }
+  20% { -o-transform: translate(-30px); }
+  40% { -o-transform: translate(15px); }
+  60% { -o-transform: translate(-15px); }
+  80% { -o-transform: translate(8px); }
+  100% { -o-origin-transform: translate(0px); }
 }

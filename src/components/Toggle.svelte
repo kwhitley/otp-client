@@ -15,17 +15,27 @@
 <style lang="scss">
   div {
     display: flex;
+    justify-content: flex-start;
+    align-self: flex-start;
   }
 
   .toggle {
     --active-color: var(--accent-color);
-    --inactive-color: rgb(209 213 219);
+    --inactive-color: var(--foreground-25);
     --rail-height: 1.5rem;
     --rail-ratio: 1.8;
     --inset: 2px;
+    flex: 1;
+    margin-bottom: 0.3rem;
+    color: var(--foreground-25);
+
+    background-color: var(--foreground-5);
+    padding: 0.4rem 0.5rem 0.4rem 0.7rem;
+    border-radius: calc(0.5 * var(--border-radius));
 
     display: flex;
     flex-flow: row wrap;
+    justify-content: space-between;
     align-items: center;
     font-family: sans-serif;
     gap: 1em;
@@ -44,7 +54,7 @@
     /* hide default styling */
     -webkit-appearance: none;
     appearance: none;
-    background-color: #fff;
+    background-color: var(--background-color);
     margin: 0;
     border-radius: 1em;
   }
@@ -74,7 +84,7 @@
   /* checkbox handle (the white part) */
   .toggle input:after {
     content: '';
-    background-color: #fff;
+    background-color: var(--foreground-95);
     position: absolute;
     aspect-ratio: 1;
     top: var(--inset);
@@ -92,7 +102,7 @@
 
   /* change the color of the span text on check as well! */
   .toggle input:checked ~ * {
-    color: var(--active-color);
+    color: var(--foreground-95);
   }
 
   /* just to center it all in the page */

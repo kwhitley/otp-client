@@ -11,6 +11,7 @@
   export let minHeight = '2rem'
   export let type = "text"
   export let disabled = false
+  export let shake = false
 
   $: isValid = validate(value)
 
@@ -52,6 +53,7 @@
     use:autofocus
     style="min-height:{minHeight};"
     disabled={disabled}
+    class:shaking={shake}
     />
 
     <button type="submit" disabled={!isValid || disabled}>

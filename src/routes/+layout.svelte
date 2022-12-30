@@ -67,6 +67,7 @@
       justify-content: center;
       padding: 1rem var(--page-inset);
       overflow-x: hidden;
+      z-index: 1;
     }
 
     .page {

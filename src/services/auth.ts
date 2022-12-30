@@ -10,6 +10,7 @@ let sessionID = undefined
 let refreshTimer = undefined
 let pendingSession
 let resolveSession
+let rejectSession
 
 const REFRESH_TOKEN_WINDOW = 10 * 1000 // 10 seconds
 
@@ -139,17 +140,24 @@ export const login = (id) => {
     throw new Error('use auth.setAppID(id) to connect your application.')
   }
 
+
+    // .catch(() => setState({ error: 'There was an error during login.' }))
+
+  pendingSession = new Promise((resolve, reject) => {
+    resolveSession = resolve
+    rejectSession = reject
+  })
+
   otp
     .post(`/app/${appID}/login`, { id })
     .then(({ sessionID }) => {
       setSession({ sessionID })
       checkSessionStatus(sessionID, 1000)
     })
-    .catch(() => setState({ error: 'There was an error during login.' }))
-
-  pendingSession = new Promise((resolve, reject) => {
-    resolveSession = resolve
-  })
+    .catch(err => {
+      // console.log('login error', err)
+      rejectSession(err)
+    })
 
   return pendingSession
 }
@@ -196,6 +204,19 @@ session.subscribe(values => {
     token = values.jwt
   }
 })
+
+export const cancel = () => {
+  console.log('canceling login...')
+
+  setState({
+    waiting: false,
+  })
+
+  clearInterval(timer)
+  timer = undefined
+
+  rejectSession()
+}
 
 export const fetcher = (config = {}) => {
   if (token) return ittyFetcher({ ...config, headers: { Authorization: `Bearer ${token}` }})

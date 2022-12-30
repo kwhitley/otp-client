@@ -1,19 +1,11 @@
 <script>
-  import { page } from '$app/stores'
   import { generateHash } from 'supergeneric/generateHash'
-  import { fly } from 'svelte/transition'
-  import { autofocus } from '~/actions/autofocus'
   import { autosize } from '~/actions/autosize'
-  import Card from '~/components/Card.svelte'
   import Copy from '~/components/icons/Copy.svelte'
   import Dice from '~/components/icons/Dice.svelte'
   import Slider from '~/components/Slider.svelte'
-  import Tabs from '~/components/Tabs.svelte'
-  import Toggle from '~/components/Toggle.svelte'
-  import { otp } from '~/services/api'
   import { toast } from '~/services/toast'
-  import { editable } from '~/utils/editable'
-  import Users from './Users.svelte'
+  import { fade } from 'svelte/transition'
 
   export let local
 
@@ -28,35 +20,7 @@
 </script>
 
 <!-- MARKUP -->
-
-  <label>
-    JWT Secret (signature)
-    <div class="secret">
-      <textarea
-        type="text"
-        placeholder="enter a custom secret or roll a new one"
-        bind:value={$local.keys.tokenSecret}
-        use:autosize
-        />
-      <div class="icon-actions">
-        <div
-          class="icon"
-          title="Generate a new value"
-          on:click={() => $local.keys.tokenSecret = reroll()}
-          >
-          <Dice />
-        </div>
-        <div
-          class="icon"
-          title="Copy to clipboard"
-          on:click={(e) => copyToClipboard(e, $local.keys.tokenSecret)}
-          >
-          <Copy />
-        </div>
-      </div>
-    </div>
-  </label>
-
+<section in:fade={{ duration: 200 }}>
   <h3>Durations</h3>
 
   <Slider
@@ -95,6 +59,43 @@
       '1 week',
     ]}
     />
+
+  <h3>Token Signatures</h3>
+
+  <p>
+    When generating JWT tokens for authenticated users, OTP Garden digitally signs them with
+    the following key, using the <strong>HS256</strong> algorithm.  To verify the authenticity of client tokens sent
+    to your backend/API, please validate them using this (secret) key!
+  </p>
+
+  <label>
+    JWT Secret (signature)
+    <div class="secret">
+      <textarea
+        type="text"
+        placeholder="enter a custom secret or roll a new one"
+        bind:value={$local.keys.tokenSecret}
+        use:autosize
+        />
+      <div class="icon-actions">
+        <div
+          class="icon"
+          title="Generate a new value"
+          on:click={() => $local.keys.tokenSecret = reroll()}
+          >
+          <Dice />
+        </div>
+        <div
+          class="icon"
+          title="Copy to clipboard"
+          on:click={(e) => copyToClipboard(e, $local.keys.tokenSecret)}
+          >
+          <Copy />
+        </div>
+      </div>
+    </div>
+  </label>
+</section>
 
 <!-- STYLES -->
 <style lang="scss">

@@ -34,7 +34,7 @@
     color: var(--foreground-50);
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
-    transition: all 0.1s linear;
+    transition: font-size 0.1s linear;
   }
 
   :global(.tabs > a:hover) {
@@ -47,6 +47,6 @@
     border-bottom: var(--tabs-line-thickness) solid var(--foreground-color);
     border-bottom: var(--tabs-line-thickness) solid var(--accent-color);
     margin-bottom: calc(-1 * var(--tabs-line-thickness));
-    font-size: 1.5em;
+    font-size: 1.3em;
   }
 </style>
