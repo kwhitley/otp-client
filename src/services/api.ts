@@ -2,7 +2,6 @@ import { fetcher } from '~/services/auth'
 import { apps, app } from '~/stores'
 
 const dev = import.meta.env.DEV
-
 const PROTOCOL = dev ? 'http://' : 'https://'
 const DOMAIN = dev ? 'localhost:8787' : 'otp.garden'
 const OTP_BASE = `${PROTOCOL}${DOMAIN}`

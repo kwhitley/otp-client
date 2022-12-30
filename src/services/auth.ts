@@ -2,7 +2,12 @@ import { persistable } from '~/utils/persistable'
 import { writable, get } from 'svelte/store'
 import { fetcher as ittyFetcher } from 'itty-fetcher'
 
-const otp = ittyFetcher({ base: 'http://localhost:8787' })
+const dev = import.meta.env.DEV
+const PROTOCOL = dev ? 'http://' : 'https://'
+const DOMAIN = dev ? 'localhost:8787' : 'otp.garden'
+const OTP_BASE = `${PROTOCOL}${DOMAIN}`
+
+const otp = ittyFetcher({ base: OTP_BASE })
 let appID = undefined
 let timer = undefined
 let token = undefined
