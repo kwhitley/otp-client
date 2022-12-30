@@ -66,9 +66,9 @@
 
 <button on:click={login}>Log In</button> -->
 
-<pre>
+<!-- <pre>
 {history}
-</pre>
+</pre> -->
 
 <!-- STYLES -->
 <style lang="scss">
