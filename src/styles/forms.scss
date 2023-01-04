@@ -63,6 +63,14 @@ label {
   user-select: none;
   color: var(--foreground-50);
 
+  // flex-flow: row wrap;
+  // align-items: baseline;
+
+  // & > *:last-child {
+  //   flex: 1 100%;
+  //   width: 100%;
+  // }
+
   &.inline {
     flex-flow: row;
     white-space: wrap;

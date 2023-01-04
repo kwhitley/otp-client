@@ -9,17 +9,12 @@
   export let buttonText = 'Save It'
   export let validate = value => Boolean(value)
   export let minHeight = '2rem'
-  export let type = "text"
   export let disabled = false
   export let shake = false
 
   $: isValid = validate(value)
 
   const dispatch = createEventDispatcher()
-
-  function typeAction(node) {
-		node.type = type
-	}
 
   export let submitHandler = value => dispatch('submit', value)
 
@@ -50,7 +45,7 @@
   disabled={disabled}
   >
   <input
-    use:typeAction
+    type="text"
     placeholder={placeholder}
     bind:value
     on:paste={onPaste(dispatch)}

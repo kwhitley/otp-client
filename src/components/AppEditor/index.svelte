@@ -16,7 +16,7 @@
   $: editorPage = new URL($page.url)?.search.replace(/^\?/, '')
   $: if (editorPage === '') goto('?general')
 
-  const { changes, dirty, revert, local } = editable(app, { trim: true })
+  const { changes, dirty, revert, local: config } = editable(app, { trim: true })
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -51,15 +51,15 @@
 
 
   {#if editorPage === 'general' }
-    <General local={local} />
+    <General config={config} />
   {/if}
 
   {#if editorPage === 'users'}
-    <Users local={local} />
+    <Users config={config} />
   {/if}
 
   {#if editorPage === 'sessions'}
-    <Sessions local={local} />
+    <Sessions config={config} />
   {/if}
 </form>
 

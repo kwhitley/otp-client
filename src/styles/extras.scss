@@ -73,3 +73,9 @@
   position: relative;
   top: calc(-1.5 * var(--vertical-padding));
 }
+
+.detail {
+  padding: 0.5em;
+  font-size: 1rem;
+  margin-bottom: 1rem !important;
+}

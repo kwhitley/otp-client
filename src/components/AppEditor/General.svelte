@@ -2,7 +2,7 @@
   import { autofocus } from '~/actions/autofocus'
   import { fade } from 'svelte/transition'
 
-  export let local
+  export let config
 </script>
 
 <!-- MARKUP -->
@@ -12,7 +12,7 @@
     <input
       type="text"
       placeholder="enter an Application Name"
-      bind:value={$local.name}
+      bind:value={$config.name}
       use:autofocus
       />
   </label>
@@ -22,7 +22,7 @@
     <input
       type="text"
       placeholder="e.g. production"
-      bind:value={$local.environment}
+      bind:value={$config.environment}
       />
   </label>
 </section>

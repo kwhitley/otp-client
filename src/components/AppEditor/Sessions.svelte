@@ -4,10 +4,11 @@
   import Copy from '~/components/icons/Copy.svelte'
   import Dice from '~/components/icons/Dice.svelte'
   import Slider from '~/components/Slider.svelte'
+  import OptionalBadge from '~/components/OptionalBadge.svelte'
   import { toast } from '~/services/toast'
   import { fade } from 'svelte/transition'
 
-  export let local
+  export let config
 
   const reroll = () => generateHash(128)
 
@@ -20,13 +21,13 @@
 </script>
 
 <!-- MARKUP -->
-<section in:fade={{ duration: 200 }}>
+<main in:fade={{ duration: 200 }}>
   <h3>Durations</h3>
 
   <Slider
     label="User has"
     afterLabel="to unlock session"
-    bind:value={$local.durations.login}
+    bind:value={$config.durations.login}
     options={[
       '1 minute',
       '5 minutes',
@@ -36,7 +37,7 @@
 
   <Slider
     label="JWT tokens last"
-    bind:value={$local.durations.token}
+    bind:value={$config.durations.token}
     options={[
       '1 minute',
       '5 minutes',
@@ -48,7 +49,7 @@
 
   <Slider
     label="Users can reconnect within"
-    bind:value={$local.durations.session}
+    bind:value={$config.durations.session}
     options={[
       '5 minutes',
       '15 minutes',
@@ -60,42 +61,62 @@
     ]}
     />
 
-  <h3>Token Signatures</h3>
-
-  <p>
-    When generating JWT tokens for authenticated users, OTP Garden digitally signs them with
-    the following key, using the <strong>HS256</strong> algorithm.  To verify the authenticity of client tokens sent
-    to your backend/API, please validate them using this (secret) key!
-  </p>
+  <h3>Token Details</h3>
 
   <label>
-    JWT Secret (signature)
+    Token Secret (signature)
     <div class="secret">
       <textarea
         type="text"
         placeholder="enter a custom secret or roll a new one"
-        bind:value={$local.keys.tokenSecret}
+        bind:value={$config.token.secret}
         use:autosize
         />
       <div class="icon-actions">
         <div
           class="icon"
           title="Generate a new value"
-          on:click={() => $local.keys.tokenSecret = reroll()}
+          on:click={() => $config.token.secret = reroll()}
           >
           <Dice />
         </div>
         <div
           class="icon"
           title="Copy to clipboard"
-          on:click={(e) => copyToClipboard(e, $local.keys.tokenSecret)}
+          on:click={(e) => copyToClipboard(e, $config.token.secret)}
           >
           <Copy />
         </div>
       </div>
     </div>
   </label>
-</section>
+
+  <p class="detail">
+    When generating JWT tokens for authenticated users, OTP Garden digitally signs them with
+    the following key, using the <strong>HS256</strong> algorithm.  To verify the authenticity of client tokens sent
+    to your backend/API, please validate them using this (secret) key!
+  </p>
+
+  <label>
+    <span>Token Audience <OptionalBadge /></span>
+    <input
+      type="text"
+      placeholder="enter an audience (optional)"
+      bind:value={$config.token.audience}
+      />
+  </label>
+
+  <label>
+    <span>Token Issuer</span>
+    <input
+      type="text"
+      placeholder="token issuer"
+      bind:value={$config.token.issuer}
+      disabled
+      />
+  </label>
+
+</main>
 
 <!-- STYLES -->
 <style lang="scss">
@@ -142,5 +163,13 @@
       flex: 0;
       gap: 0.3rem;
     }
+  }
+
+  label {
+    margin-top: 1.5rem;
+  }
+
+  .detail {
+    margin-top: 0.3rem;
   }
 </style>

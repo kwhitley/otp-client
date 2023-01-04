@@ -7,7 +7,7 @@
   import Toggle from '~/components/Toggle.svelte'
   import { toast } from '~/services/toast'
 
-  export let local
+  export let config
 
   const reroll = () => generateHash(128)
 
@@ -18,18 +18,18 @@
     toast(`Copied key to clipboard.`, { duration: '2 seconds' })
   }
 
-  $: fetchExample = $local.users.endpoints.getUser.method === 'GET'
-  ? `fetch("${$local.users.endpoints.getUser.url}?id=foo@bar.com", {
+  $: fetchExample = $config.users.endpoints.getUser.method === 'GET'
+  ? `fetch("${$config.users.endpoints.getUser.url}?id=foo@bar.com", {
   headers: {
-    "otpg-api-key": "${$local.keys.api.slice(0, 30)}...", // abbreviated
+    "otpg-api-key": "${$config.keys.api.slice(0, 30)}...", // abbreviated
   }
 })
 `
-  : `fetch("${$local.users.endpoints.getUser.url}", {
-  method: "${$local.users.endpoints.getUser.method}",
+  : `fetch("${$config.users.endpoints.getUser.url}", {
+  method: "${$config.users.endpoints.getUser.method}",
   headers: {
     "content-type": "application/json",
-    "otpg-api-key": "${$local.keys.api.slice(0, 30)}...", // abbreviated
+    "otpg-api-key": "${$config.keys.api.slice(0, 30)}...", // abbreviated
   },
   body: JSON.stringify({
     id: "stray@kitty.com" // this can be any identifier
@@ -65,7 +65,7 @@ const examplePayload = `{
 <h3>User Endpoints</h3>
 
 <section class="endpoints split flexed">
-  <Card dim={!$local.users.endpoints?.getUser?.url}>
+  <Card dim={!$config.users.endpoints?.getUser?.url}>
     <h3>Get User/Validate</h3>
 
     <section class="inputs">
@@ -73,7 +73,7 @@ const examplePayload = `{
         <textarea
           type="text"
           placeholder="e.g. https://foo.bar/validate/user"
-          bind:value={$local.users.endpoints.getUser.url}
+          bind:value={$config.users.endpoints.getUser.url}
           use:autosize
           />
       </label>
@@ -83,13 +83,13 @@ const examplePayload = `{
         <input
           type="text"
           placeholder="POST"
-          bind:value={$local.users.endpoints.getUser.method}
+          bind:value={$config.users.endpoints.getUser.method}
           />
       </label>
     </section>
   </Card>
 
-  <!-- <Card dim={!$local.users.endpoints?.createUser?.url}>
+  <!-- <Card dim={!$config.users.endpoints?.createUser?.url}>
     <h3>Create User</h3>
 
     <section class="inputs">
@@ -97,7 +97,7 @@ const examplePayload = `{
         <textarea
           type="text"
           placeholder="e.g. https://foo.bar/users"
-          bind:value={$local.users.endpoints.createUser.url}
+          bind:value={$config.users.endpoints.createUser.url}
           use:autosize
           />
       </label>
@@ -107,7 +107,7 @@ const examplePayload = `{
         <input
           type="text"
           placeholder="POST"
-          bind:value={$local.users.endpoints.createUser.method}
+          bind:value={$config.users.endpoints.createUser.method}
           />
       </label>
     </section>
@@ -121,21 +121,21 @@ const examplePayload = `{
     <textarea
       type="text"
       placeholder="enter a custom secret or roll a new one"
-      bind:value={$local.keys.api}
+      bind:value={$config.keys.api}
       use:autosize
       />
     <div class="icon-actions">
       <div
         class="icon"
         title="Generate a new value"
-        on:click={() => $local.keys.api = reroll()}
+        on:click={() => $config.keys.api = reroll()}
         >
         <Dice />
       </div>
       <div
         class="icon"
         title="Copy to clipboard"
-        on:click={(e) => copyToClipboard(e, $local.keys.api)}
+        on:click={(e) => copyToClipboard(e, $config.keys.api)}
         >
         <Copy />
       </div>
