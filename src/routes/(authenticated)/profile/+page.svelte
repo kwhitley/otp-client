@@ -56,8 +56,8 @@
           {#if $dirty}
             <button
               class="secondary"
-              in:fly={{ x: 50, duration: 200 }}
-              out:fly={{ x: -200, duration: 200 }}
+              in:fly|local={{ x: 50, duration: 200 }}
+              out:fly|local={{ x: -200, duration: 200 }}
               on:click={revert}
               >
               Cancel

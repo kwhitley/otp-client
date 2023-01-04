@@ -29,7 +29,7 @@
   method: "${$config.users.endpoints.getUser.method}",
   headers: {
     "content-type": "application/json",
-    "otpg-api-key": "${$config.keys.api.slice(0, 30)}...", // abbreviated
+    "otpg-api-key": "${$config.otp.apiKey.slice(0, 30)}...", // abbreviated
   },
   body: JSON.stringify({
     id: "stray@kitty.com" // this can be any identifier
@@ -49,7 +49,7 @@ $: fetchExampleWithResponse = `${fetchExample}
 }
 
 // EXAMPLE RESPONSE: User Not Found/Not Allowed
-404 User not found
+400/401/403/404
 `
 
 const examplePayload = `{
@@ -121,21 +121,21 @@ const examplePayload = `{
     <textarea
       type="text"
       placeholder="enter a custom secret or roll a new one"
-      bind:value={$config.keys.api}
+      bind:value={$config.otp.apiKey}
       use:autosize
       />
     <div class="icon-actions">
       <div
         class="icon"
         title="Generate a new value"
-        on:click={() => $config.keys.api = reroll()}
+        on:click={() => $config.otp.apiKey = reroll()}
         >
         <Dice />
       </div>
       <div
         class="icon"
         title="Copy to clipboard"
-        on:click={(e) => copyToClipboard(e, $config.keys.api)}
+        on:click={(e) => copyToClipboard(e, $config.otp.apiKey)}
         >
         <Copy />
       </div>
@@ -162,6 +162,9 @@ const examplePayload = `{
   the user fails to validate the session.
 </p>
 
+<h3>Expected Response Format</h3>
+<pre>{examplePayload}</pre>
+
 <ul>
   <li>
     <p>
@@ -176,8 +179,6 @@ const examplePayload = `{
     </p>
   </li>
 </ul>
-
-<pre>{examplePayload}</pre>
 
 <!-- STYLES -->
 <style lang="scss">

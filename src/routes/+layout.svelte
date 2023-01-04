@@ -34,11 +34,7 @@
 
   <section class="page-container" class:constrained>
     {#key data.rootPath}
-      <div
-        class="page"
-        in:fly|local={{ x: 100, duration: 200, delay: 110 }}
-        out:fly|local={{ x: -100, duration: 100 }}
-        >
+      <div class="page" in:fly={{ x: 100, duration: 200 }}>
         <slot />
       </div>
     {/key}

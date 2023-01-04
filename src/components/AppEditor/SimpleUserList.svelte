@@ -1,12 +1,30 @@
 <script>
   import { autosize } from '~/actions/autosize'
+  import EmailList from '~/components/EmailList.svelte'
+  import compare from 'just-compare'
 
   export let config
-  let local
+  let local = `kevin@gmail.com, foo@bar.com, <Wahtever>whatever.else@gmail.com, "something@inquotes.com"`
+  let items = [
+    'krwhitley@gmail.com',
+    'foo@bar.com'
+  ]
 
-  $: {
-    local = $config.users.list
-  }
+  // const isEmail = str => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/.test(str)
+
+  // $: asArray = local?.replace(/["]/gi, '')
+  //               .replace(/<[^>]*>/gi, '')
+  //               .split(/\s*[,]\s*/g)
+  //               .filter(isEmail)
+
+  // $: if (!compare(asArray, $config.users.list)) {
+  //   console.log('user list not equal', {
+  //     existing: $config.users.list,
+  //     local,
+  //     asArray,
+  //   })
+  //   // local = $config.users.list?.join(`,\n`)
+  // }
 </script>
 
 <!-- MARKUP -->
@@ -18,19 +36,19 @@
   embed a JWT claim with the email address in the final user token.
 </p>
 
-<label>
-  List of *allowed* email addresses
-  <textarea
-    type="text"
-    placeholder={`foo@bar.com, bar@baz.com`}
-    bind:value={$config.users.list}
-    use:autosize
-    />
-</label>
+<p>
+  We support a wide variety of email list formats, so paste away!
+</p>
 
-<pre>
-{JSON.stringify(local, null, 2)}
-</pre>
+<EmailList
+  items={$config.users.list}
+  onChange={(v) => $config.users.list = v}
+  placeholder="e.g. foo@bar.com, mittens@kittens.com, etc."
+  >
+  Allow the following
+  {$config.users.list.length || ''}
+  users:
+</EmailList>
 
 <!-- STYLES -->
 <style lang="scss">
