@@ -62,46 +62,82 @@ export const logout = () => {
   }
 }
 
-const getSession = (sessionID: string) => {
+export type Session = {
+  jwt: string,
+  sessionID: string,
+  tokenExpires: number,
+  sessionExpires: number,
+}
+
+const receiveSession = (session: Session) => {
+  const { jwt, sessionID, tokenExpires, sessionExpires } = session
+
+  if (!jwt) return setState({ error: 'Expected a JWT token.' })
+  if (!sessionID) return setState({ error: 'Expected a sessionID.' })
+  if (!tokenExpires) return setState({ error: 'Expected a tokenExpires.' })
+  if (!sessionExpires) return setState({ error: 'Expected a sessionExpires.' })
+
+  token = jwt
+
+  setSession({
+    sessionID,
+    jwt,
+    isLoggedIn: true,
+    tokenExpires,
+    sessionExpires,
+  })
+
+  setState({
+    waiting: false,
+    error: undefined,
+  })
+
+  if (resolveSession) {
+    resolveSession()
+  }
+
+  refreshSessionBeforeExpiration(response)
+}
+
+const listenForUnlock = (sessionID) => {
+  try {
+    const socket = new WebSocket(`ws://localhost:8787/app/otpg/connect?sessionID=${sessionID}`)
+
+    socket.addEventListener('connected', event => {
+      // log('connection established!')
+      console.log('OTP socket created')
+    })
+
+    socket.addEventListener('message', event => {
+      console.log('Message received from server', event.data)
+
+      try {
+        const message = JSON.parse(event.data)
+        if (message.type === 'token') {
+          receiveSession(message.token)
+        }
+      } catch(err) {
+        console.error('There was an error receiving the socket message', event.data)
+      }
+      // log(event.data)
+    })
+
+    setState({ waiting: true })
+
+    return true
+  } catch(err) {
+    console.error('Could not create socket:', err.message)
+  }
+
+  return false
+}
+
+const fetchSession = (sessionID: string) => {
   console.log('getting session', sessionID)
 
   otp
     .get(`/session/${sessionID}`)
-    .then((response) => {
-      const { jwt, sessionID, tokenExpires, sessionExpires } = response
-      if (!jwt) return setState({ error: 'Expected a JWT token.' })
-      if (!sessionID) return setState({ error: 'Expected a sessionID.' })
-      if (!tokenExpires) return setState({ error: 'Expected a tokenExpires.' })
-      if (!sessionExpires) return setState({ error: 'Expected a sessionExpires.' })
-
-      token = jwt
-
-      setSession({
-        sessionID,
-        jwt,
-        isLoggedIn: true,
-        tokenExpires,
-        sessionExpires,
-      })
-
-      setState({
-        waiting: false,
-        error: undefined,
-      })
-
-      if (resolveSession) {
-        resolveSession()
-      }
-
-      refreshSessionBeforeExpiration(response)
-
-      // set timer for refresh
-      // const refreshDate = tokenExpires * 1000 - 30000 - Date.now()
-      // console.log('token expires at', new Date(tokenExpires * 1000))
-      // console.log('refreshing in', refreshDate / 1000|0, 'seconds')
-      // clearTimeout(refreshTimer)
-      // refreshTimer = setTimeout(() => getSession(sessionID), refreshDate)
-    })
+    .then(receiveSession)
     .catch((err) => {
       console.warn('there was an error fetching the session', err.message)
     })
@@ -113,7 +149,7 @@ const refreshSessionBeforeExpiration = (session) => {
   console.log('token expires at', new Date(tokenExpires * 1000))
   console.log('refreshing in', refreshDate / 1000|0, 'seconds')
   clearTimeout(refreshTimer)
-  refreshTimer = setTimeout(() => getSession(sessionID), refreshDate)
+  refreshTimer = setTimeout(() => fetchSession(sessionID), refreshDate)
 }
 
 const checkSessionStatus = (sessionID, interval = undefined) => {
@@ -131,7 +167,7 @@ const checkSessionStatus = (sessionID, interval = undefined) => {
 
       console.log('clearing interval timer')
       clearInterval(timer)
-      getSession(sessionID)
+      fetchSession(sessionID)
     })
 }
 
@@ -156,7 +192,11 @@ export const login = (id) => {
     .post(`/app/${appID}/login`, { id })
     .then(({ sessionID }) => {
       setSession({ sessionID })
-      checkSessionStatus(sessionID, 1000)
+
+      if (!listenForUnlock(sessionID)) {
+        // use long polling if WS fails
+        checkSessionStatus(sessionID, 1000)
+      }
     })
     .catch(err => {
       // console.log('login error', err)
