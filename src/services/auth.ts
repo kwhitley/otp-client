@@ -96,16 +96,22 @@ const receiveSession = (session: Session) => {
     resolveSession()
   }
 
-  refreshSessionBeforeExpiration(response)
+  refreshSessionBeforeExpiration(session)
 }
 
-const listenForUnlock = (sessionID) => {
+const listenForUnlock = (sessionID) => new Promise((resolve, reject) => {
   try {
     const socket = new WebSocket(`ws://localhost:8787/app/otpg/connect?sessionID=${sessionID}`)
+    window.socket = socket
 
-    socket.addEventListener('connected', event => {
-      // log('connection established!')
+    socket.addEventListener('error', (e) => {
+      reject(false)
+    })
+
+    socket.addEventListener('open', event => {
       console.log('OTP socket created')
+      setState({ waiting: true })
+      resolve(true)
     })
 
     socket.addEventListener('message', event => {
@@ -115,22 +121,18 @@ const listenForUnlock = (sessionID) => {
         const message = JSON.parse(event.data)
         if (message.type === 'token') {
           receiveSession(message.token)
+        } else {
+          console.log('received message from app', message)
         }
       } catch(err) {
-        console.error('There was an error receiving the socket message', event.data)
+        console.error('There was an error receiving the socket message', event.data, err.message, err.stack)
       }
-      // log(event.data)
     })
-
-    setState({ waiting: true })
-
-    return true
   } catch(err) {
     console.error('Could not create socket:', err.message)
+    reject(false)
   }
-
-  return false
-}
+})
 
 const fetchSession = (sessionID: string) => {
   console.log('getting session', sessionID)
@@ -190,13 +192,13 @@ export const login = (id) => {
 
   otp
     .post(`/app/${appID}/login`, { id })
-    .then(({ sessionID }) => {
+    .then(async ({ sessionID }) => {
       setSession({ sessionID })
 
-      if (!listenForUnlock(sessionID)) {
-        // use long polling if WS fails
-        checkSessionStatus(sessionID, 1000)
-      }
+      listenForUnlock(sessionID)
+        .catch(() => {
+          checkSessionStatus(sessionID, 1000)
+        })
     })
     .catch(err => {
       // console.log('login error', err)
@@ -228,7 +230,7 @@ const checkSession = () => {
 
   if (tokenExpires <= now) {
     console.log('token has expired or is about to expire, renewing...')
-    return getSession(currentSession.sessionID)
+    return fetchSession(currentSession.sessionID)
   }
 
   console.log('session is still good!')
@@ -263,7 +265,10 @@ export const cancel = () => {
 }
 
 export const fetcher = (config = {}) => {
-  if (token) return ittyFetcher({ ...config, headers: { Authorization: `Bearer ${token}` }})
+  if (token) return ittyFetcher({
+    ...config,
+    headers: { Authorization: `Bearer ${token}` },
+  })
 
   return ittyFetcher(config)
 }
