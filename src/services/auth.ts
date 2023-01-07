@@ -1,6 +1,6 @@
 import { persistable } from '~/utils/persistable'
 import { writable, get } from 'svelte/store'
-import { fetcher as ittyFetcher } from 'itty-fetcher'
+import { fetcher as ittyFetcher, StatusError } from 'itty-fetcher'
 
 const OTP_URL = import.meta.env.DEV
               ? 'http://localhost:8787'
@@ -265,10 +265,28 @@ export const cancel = () => {
 }
 
 export const fetcher = (config = {}) => {
-  if (token) return ittyFetcher({
+  const options = {
+    handleResponse: (response) => {
+      // handle unauthenticated requests
+      if (response.status === 401) {
+        logout()
+      }
+
+      if (!response.ok) throw new StatusError(response.status, response.statusText)
+
+      const contentType = response.headers.get('content-type')
+
+      return contentType.includes('json')
+        ? response.json()
+        : response
+    },
     ...config,
+  }
+
+  if (token) return ittyFetcher({
+    ...options,
     headers: { Authorization: `Bearer ${token}` },
   })
 
-  return ittyFetcher(config)
+  return ittyFetcher(options)
 }

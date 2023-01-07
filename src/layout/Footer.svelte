@@ -18,7 +18,7 @@
         <Twitter />
       </a>
 
-      <a href="https://discord.gg/aTunhByeNY">
+      <a href="https://discord.gg/XrET8skZB9">
         <Discord />
       </a>
 

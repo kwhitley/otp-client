@@ -1,6 +1,6 @@
 {
   "name": "otp-garden-client",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "vite dev",
@@ -35,7 +35,7 @@
   "type": "module",
   "dependencies": {
     "autosize": "^5.0.2",
-    "itty-fetcher": "^0.7.6",
+    "itty-fetcher": "^0.8.1",
     "itty-time": "^0.2.2",
     "just-clone": "^6.2.0",
     "just-compare": "^2.3.0",

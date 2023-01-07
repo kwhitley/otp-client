@@ -1057,10 +1057,10 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==
 
-itty-fetcher@^0.7.6:
-  version "0.7.6"
-  resolved "https://registry.yarnpkg.com/itty-fetcher/-/itty-fetcher-0.7.6.tgz#559a2a310b8204e03ca97b49aea202c3658c4634"
-  integrity sha512-Og0aOK6Wgsm8YUVKDfdo7NL6jvz5x6TzOgO05BAdBWcAcBDqoSRyxzGem2g9zWiIcRIblw/9Ku/8TGWb2Es/Iw==
+itty-fetcher@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/itty-fetcher/-/itty-fetcher-0.8.1.tgz#b73b6c529a520e30aca52c04a0c1ee202255cad2"
+  integrity sha512-ZR5L+Af1nqdg3UI3js/0BlXqvyxY0cANVZmQH1coBBJFt4GWWayfkVQCYja6t1+brtjC3eUCiYuPutptf3WP3g==
 
 itty-time@^0.2.2:
   version "0.2.2"

@@ -1,10 +1,10 @@
 <script>
   import { goto } from '$app/navigation'
   import { browser } from '$app/environment'
-  export let data
+  import { session } from '~/services/auth'
 
   $: {
-    if (browser && !data.isLoggedIn) {
+    if (browser && !$session.isLoggedIn) {
       console.log('returning to root...')
       goto('/')
     }
