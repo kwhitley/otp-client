@@ -5,6 +5,9 @@ import { fetcher as ittyFetcher, StatusError } from 'itty-fetcher'
 const OTP_PROTOCOL = import.meta.env.DEV
                     ? 'http://'
                     : 'https://'
+const OTP_WS = import.meta.env.DEV
+                    ? 'ws://'
+                    : 'wss://'
 const OTP_DOMAIN = import.meta.env.DEV
                     ? 'localhost:8787'
                     : 'otp.garden'
@@ -104,7 +107,7 @@ const receiveSession = (session: Session) => {
 
 const listenForUnlock = (sessionID) => new Promise((resolve, reject) => {
   try {
-    const socket = new WebSocket(`ws://${OTP_DOMAIN}/app/otpg/connect?sessionID=${sessionID}`)
+    const socket = new WebSocket(`${OTP_WS}${OTP_DOMAIN}/app/otpg/connect?sessionID=${sessionID}`)
 
     socket.addEventListener('error', (e) => {
       reject(false)
