@@ -2,11 +2,14 @@ import { persistable } from '~/utils/persistable'
 import { writable, get } from 'svelte/store'
 import { fetcher as ittyFetcher, StatusError } from 'itty-fetcher'
 
-const OTP_URL = import.meta.env.DEV
-              ? 'http://localhost:8787'
-              : 'https://otp.garden'
+const OTP_PROTOCOL = import.meta.env.DEV
+                    ? 'http://'
+                    : 'https://'
+const OTP_DOMAIN = import.meta.env.DEV
+                    ? 'localhost:8787'
+                    : 'otp.garden'
 
-const otp = ittyFetcher({ base: OTP_URL })
+const otp = ittyFetcher({ base: OTP_PROTOCOL + OTP_DOMAIN })
 let appID = undefined
 let timer = undefined
 let token = undefined
@@ -101,8 +104,7 @@ const receiveSession = (session: Session) => {
 
 const listenForUnlock = (sessionID) => new Promise((resolve, reject) => {
   try {
-    const socket = new WebSocket(`ws://localhost:8787/app/otpg/connect?sessionID=${sessionID}`)
-    window.socket = socket
+    const socket = new WebSocket(`ws://${OTP_DOMAIN}/app/otpg/connect?sessionID=${sessionID}`)
 
     socket.addEventListener('error', (e) => {
       reject(false)
