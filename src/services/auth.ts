@@ -28,10 +28,7 @@ export const setAppID = (id: string) => {
   appID = id
 }
 
-export const state = writable({
-  error: undefined,
-  waiting: false,
-})
+export const waiting = writable(false)
 
 export const session = persistable('session', {
   previouslyLoggedIn: false,
@@ -48,14 +45,9 @@ const setSession = (patch: object) => session.update(existing => ({
   ...patch,
 }))
 
-const setState = (patch: object) => state.update(existing => ({
-  ...existing,
-  ...patch,
-}))
-
 export const logout = () => {
   session.set({})
-  state.set({})
+  waiting.set(false)
 
   if (sessionID) {
     if (!appID) {
@@ -64,7 +56,9 @@ export const logout = () => {
 
     otp
       .get(`/end-session/${sessionID}`)
-      .catch(() => setState({ error: 'There was an error during logout.' }))
+      .catch(() => {
+        console.error('There was an error during logout')
+      })
   }
 }
 
@@ -78,10 +72,10 @@ export type Session = {
 const receiveSession = (session: Session) => {
   const { jwt, sessionID, tokenExpires, sessionExpires } = session
 
-  if (!jwt) return setState({ error: 'Expected a JWT token.' })
-  if (!sessionID) return setState({ error: 'Expected a sessionID.' })
-  if (!tokenExpires) return setState({ error: 'Expected a tokenExpires.' })
-  if (!sessionExpires) return setState({ error: 'Expected a sessionExpires.' })
+  if (!jwt) throw new Error('Expected a JWT token.')
+  if (!sessionID) throw new Error('Expected a sessionID.')
+  if (!tokenExpires) throw new Error('Expected a tokenExpires.')
+  if (!sessionExpires) throw new Error('Expected a sessionExpires.')
 
   token = jwt
 
@@ -93,10 +87,7 @@ const receiveSession = (session: Session) => {
     sessionExpires,
   })
 
-  setState({
-    waiting: false,
-    error: undefined,
-  })
+  waiting.set(false)
 
   if (resolveSession) {
     resolveSession()
@@ -115,7 +106,7 @@ const listenForUnlock = (sessionID) => new Promise((resolve, reject) => {
 
     socket.addEventListener('open', event => {
       console.log('OTP socket created')
-      setState({ waiting: true })
+      waiting.set(true)
       resolve(true)
     })
 
@@ -161,7 +152,7 @@ const refreshSessionBeforeExpiration = (session) => {
 
 const checkSessionStatus = (sessionID, interval = undefined) => {
   if (interval) {
-    setState({ waiting: true })
+    waiting.set(true)
     return timer = setInterval(() => checkSessionStatus(sessionID), interval)
   }
 
@@ -179,16 +170,8 @@ const checkSessionStatus = (sessionID, interval = undefined) => {
 }
 
 export const login = (id) => {
-  if (!id) {
-    return setState({ error: 'Must have an identifier to begin login.' })
-  }
-
-  if (!appID) {
-    throw new Error('use auth.setAppID(id) to connect your application.')
-  }
-
-
-    // .catch(() => setState({ error: 'There was an error during login.' }))
+  if (!id) throw new Error('Must have an identifier to begin login.')
+  if (!appID) throw new Error('use auth.setAppID(id) to connect your application.')
 
   pendingSession = new Promise((resolve, reject) => {
     resolveSession = resolve
@@ -206,7 +189,7 @@ export const login = (id) => {
         })
     })
     .catch(err => {
-      // console.log('login error', err)
+      console.log('login error', err)
       rejectSession(err)
     })
 
@@ -216,7 +199,6 @@ export const login = (id) => {
 const checkSession = () => {
   const currentSession = get(session)
   console.log('checking session...', currentSession)
-  const currentState = get(state)
 
   const sessionExpires = +new Date(currentSession.sessionExpires * 1000)
   const tokenExpires = +new Date(currentSession.tokenExpires * 1000)
@@ -242,6 +224,21 @@ const checkSession = () => {
   refreshSessionBeforeExpiration(currentSession)
 }
 
+export const sendCode = (code: string) => {
+  const currentSession = get(session)
+  const sessionID = currentSession.sessionID
+
+  return new Promise((resolve, reject) => {
+    if (!code) throw new Error('Must have a code to send.')
+    if (!sessionID) throw new Error('Cannot send a code without a current session.')
+
+    return otp
+      .get(`/unlock?session=${sessionID}&code=${code}`)
+      .catch(reject)
+  })
+
+}
+
 session.subscribe(values => {
   checkSession()
 
@@ -259,13 +256,9 @@ session.subscribe(values => {
 export const cancel = () => {
   console.log('canceling login...')
 
-  setState({
-    waiting: false,
-  })
-
+  waiting.set(false)
   clearInterval(timer)
   timer = undefined
-
   rejectSession()
 }
 
