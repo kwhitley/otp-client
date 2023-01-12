@@ -61,7 +61,10 @@
       xSpread=0.1
       colorArray={[
         'white',
+        'white',
+        'white',
         'var(--blue)',
+        'magenta',
       ]}
       fallDistance="5vh"
       />
