@@ -36,7 +36,7 @@
   <h1>Success!</h1>
 
   <p>
-    You should now be logged in to <strong class="app-name">test</strong> in your original window, and this page may be closed at
+    You should now be logged in within your original window, and this page may be closed at
     any time. Thanks for using OTP Garden!
   </p>
 
