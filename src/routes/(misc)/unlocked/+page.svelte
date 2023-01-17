@@ -77,19 +77,28 @@
     text-transform: capitalize;
   }
 
+  h1 {
+    font-size: clamp(1.8rem, 10vw, 5rem);
+    margin-bottom: 2rem;
+  }
+
 
   main {
     display: flex;
     flex-flow: column;
     align-items: center;
     justify-content: center;
-    height: 80%;
-    padding: 3em;
-    max-height: 100vh;
+    min-height: 80%;
+    padding: 3rem;
     flex: 1;
 
     & > * {
       max-width: 500px;
+    }
+
+    @media (max-width: 25em) {
+      // background-color: red;
+      padding: 1.5rem;
     }
   }
 
@@ -104,5 +113,10 @@
     padding: 2em;
     border-radius: var(--border-radius);
     color: var(--foreground-75);
+
+    @media (max-width: 25em) {
+      // background-color: red;
+      padding: 1rem;
+    }
   }
 </style>
